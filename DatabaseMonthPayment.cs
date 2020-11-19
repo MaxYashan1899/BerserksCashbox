@@ -17,28 +17,35 @@ namespace BerserksCashbox
                 }
             }
         }
-       public void DatabaseInfo(List<BerserkMembers> berserkMembers)
+       public void DatabaseInfo(List<BerserkMembers> berserkMembers, DatabaseMonthPayment databaseMonthPayment)
         {
                using (var db = new BerserkMembersDatabase())
             {
                
                 var members = db.BerserkMembers;
                 var monthDifference = MonthDifference(DateTime.Now);
-            
+                //var monthPaymentSum = MonthPaymentsSum(databaseMonthPayment);
                 foreach (var item in members)
                 {
                     item.CurrentDebt = item.StartDebt * (monthDifference + 1);
-                    item.MoneyBalance = item.CurrentPayment - item.CurrentDebt;
+                    //item.MoneyBalance = item.CurrentPayment - item.CurrentDebt;
+                    //item.CurrentPayment = item.CurrentPayment;
                 }
                 db.SaveChanges();
               
                 Console.WriteLine();
                 Console.WriteLine("Задолженность по людям:");
-               
-                foreach (var item in members)
-                     Console.WriteLine($"Имя:{item.BerserksName}\t - долг:{item.CurrentDebt} грн. \t - взнос:{item.CurrentPayment} грн. \t баланс: {item.MoneyBalance} грн.");
-                   
-              }
+              
+                berserkMembers = db.BerserkMembers.ToList();
+                var max = berserkMembers.GroupBy(n => n.BerserksName).Select(m => m.FirstOrDefault());
+                
+                foreach (var item in max)
+                {
+                    var a = db.BerserkMembers.Where(n => n.CurrentData.Month == DateTime.Now.Month).Where(m=>m.BerserksName == item.BerserksName).Sum(s => s.CurrentPayment);
+                    var b = a - item.CurrentDebt; 
+                    Console.WriteLine($"Имя:{item.BerserksName}\t - долг:{item.CurrentDebt} грн. \t - взнос:{a} грн. \t баланс: {b} грн.");
+                }
+            }
         }
         
        public int MonthDifference(DateTime currentData)
@@ -60,7 +67,7 @@ namespace BerserksCashbox
             var monthPaymentsSum = 0;
             using (var db = new BerserkMembersDatabase())
             {
-               monthPaymentsSum = db.BerserkMembers.Where(d=>d.CurrentData.Day == DateTime.Now.Day).Sum(p => p.CurrentPayment);
+               monthPaymentsSum = db.BerserkMembers.Where(d=>d.CurrentData.Month == DateTime.Now.Month).Sum(p => p.CurrentPayment);
             }
             
               return monthPaymentsSum;
@@ -68,7 +75,8 @@ namespace BerserksCashbox
    }
 }
 
-//  найти ошибки с текущем долге
-// баланс текущий долг за месяц - сумма взносов за месяц
+
+// общая сумма взносов, общий баланс по людям   - правильно назвать переменные  + проверки!!!
+
 // парсинг
 // проверки

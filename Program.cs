@@ -8,6 +8,7 @@ namespace BerserksCashbox
 {
     class Program
     {
+       
         static void Main(string[] args)
         {
             Console.OutputEncoding = System.Text.Encoding.UTF8;
@@ -21,8 +22,8 @@ namespace BerserksCashbox
             var add_RemoveBerserksMember = new Add_RemoveBerserksMember();
     
             #region Инициализация объектами
-            BerserkMembers berserk1 = new BerserkMembers { BerserksName = "Ragnar", StartDebt = 250, StartData = DateTime.Now };
-            BerserkMembers berserk2 = new BerserkMembers { BerserksName = "Ottar", StartDebt = 250, StartData = DateTime.Now };
+            BerserkMembers berserk1 = new BerserkMembers { BerserksName = "Ragnar", StartDebt = 250, StartData = DateTime.Now};
+            BerserkMembers berserk2 = new BerserkMembers { BerserksName = "Ottar", StartDebt = 250, StartData = DateTime.Now};
             BerserkMembers berserk3 = new BerserkMembers { BerserksName = "Torbiorn", StartDebt = 250, StartData = DateTime.Now};
             BerserkMembers berserk4 = new BerserkMembers { BerserksName = "Eivar", StartDebt = 150, StartData = DateTime.Now };
             berserkMembers.Add(berserk1);
@@ -51,7 +52,7 @@ namespace BerserksCashbox
                         case 1:
                             databaseMonthPayment.DatabaseInitialization(berserk1, berserk2, berserk3, berserk4);
                             monthPaymentOperations.GetMonthPayment(berserkMembers);
-                            databaseMonthPayment.DatabaseInfo(berserkMembers);
+                            databaseMonthPayment.DatabaseInfo(berserkMembers, databaseMonthPayment);
                             break;
                         case 2:
                             databaseCashBoxOperation.WorkshopRentalPayment(cashBoxOperation);
@@ -67,7 +68,7 @@ namespace BerserksCashbox
                             break;
                         case 6:
                             databaseMonthPayment.DatabaseInitialization(berserk1, berserk2, berserk3, berserk4);
-                            databaseMonthPayment.DatabaseInfo(berserkMembers);
+                            databaseMonthPayment.DatabaseInfo(berserkMembers, databaseMonthPayment);
                             break;
                         case 7:
                             databaseCashBoxOperation.TotalSumInCashBox(databaseMonthPayment, cashBoxOperation);

@@ -16,10 +16,17 @@ namespace BerserksCashbox
         public DateTime CurrentData { get; set; }
         public int MoneyBalance { get; set; }
 
+        //public int NovemberPayments { get; set; } = 11;
+        //public int DecemberPayments { get; set; } = 12;
+        //public int JanuaryPayments { get; set; } = 1;
 
         public BerserkMembers()
         { }
-      
+
+        internal static object Select(Func<object, object> p)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
 
