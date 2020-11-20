@@ -69,7 +69,7 @@ namespace BerserksCashbox
             //int monthRentalSum = 1000;
             Console.WriteLine("Введите суму оплаты за аренду мастерской:");
             int workshopRentalPayment = int.Parse(Console.ReadLine());
-            var newOperation = new CashBoxOperation { WorkshopRental = workshopRentalPayment, CurrentData = DateTime.Now };
+            var newOperation = new CashBoxOperation { WorkshopRental = workshopRentalPayment, CurrentData = DateTime.Now};
 
             using (var db = new CashBoxDatabase())
             {
@@ -91,46 +91,102 @@ namespace BerserksCashbox
             return cashBoxOperation.WorkshopRental;
         }
 
-        public int TotalSumInCashBox(DatabaseMonthPayment databaseMonthPayment, CashBoxOperation cashBoxOperation)
+        public void TotalSumInCashBox(DatabaseMonthPayment databaseMonthPayment, CashBoxOperation cashBoxOperation)
         {
-           var currentSumInCashBox = 0;
+           //var currentSumInCashBox = 0;
 
            
             using (var db = new CashBoxDatabase())
             {
-                var otherIncomesSum = db.CashBoxOperations.Where(n => n.CurrentData.Day == DateTime.Now.Day).Sum(s => s.OtherIncomes);
-                var monthPaymentSum = databaseMonthPayment.MonthPaymentsSum(databaseMonthPayment);
-                var otherExpencesSum = db.CashBoxOperations.Where(n => n.CurrentData.Day == DateTime.Now.Day).Sum(s => s.OtherExpenses);
-                var workshopRentalSum = db.CashBoxOperations.Where(n => n.CurrentData.Day == DateTime.Now.Day).Sum(s => s.WorkshopRental);
-                var communityHouseRental = db.CashBoxOperations.Where(n => n.CurrentData.Day == DateTime.Now.Day).Sum(s => s.CommunityHouseRental);
-               
-                currentSumInCashBox = cashBoxOperation.BaseCashBoxSum + otherIncomesSum + monthPaymentSum
-                                      - otherExpencesSum - workshopRentalSum - communityHouseRental;
-
                 var firstDatabaseElement = db.CashBoxOperations.Find(1);
-                if (DateTime.Now.Month - firstDatabaseElement.CurrentData.Month > 1)
-                    //   cashBoxOperation.BaseCashBoxSum = касса за предыдущий месяц
-                    // возможно создать свойство касса за месяц и сохранять его в БД
-                    Console.WriteLine();
+                if (DateTime.Now.Day - firstDatabaseElement.CurrentData.Day > 1)
+                {
+                   cashBoxOperation.BaseCashBoxSum = MonthSumInCashBox(databaseMonthPayment, cashBoxOperation, DateTime.Now.AddDays(-1).Day, cashBoxOperation.BaseCashBoxSum);
+                   MonthSumInCashBox(databaseMonthPayment, cashBoxOperation, DateTime.Now.Day, cashBoxOperation.BaseCashBoxSum);
+                  
+                    //CashBoxBalancePrint(currentSumInCashBox, cashBoxOperation.BaseCashBoxSum, workshopRentalSum, monthPaymentSum, communityHouseRental, otherIncomesSum, otherExpencesSum)
+                }
                 else
-                    cashBoxOperation.BaseCashBoxSum = 2500;
+                    //cashBoxOperation.BaseCashBoxSum = 2500;
+                    MonthSumInCashBox(databaseMonthPayment, cashBoxOperation, DateTime.Now.Day, cashBoxOperation.BaseCashBoxSum);
 
 
-                Console.WriteLine($"Баланс по кассе: {currentSumInCashBox} грн.");
-                Console.WriteLine($"\tКасса на начало месяца: {cashBoxOperation.BaseCashBoxSum} грн.  \tРасходы на мастерскую: {workshopRentalSum} грн.");
-                Console.WriteLine($"\tОбщая сумма взносов: {monthPaymentSum} грн. \t\tРасходы на ангар: {communityHouseRental} грн.");
-                Console.WriteLine($"\tСумма доходов: {otherIncomesSum} грн. \t\tСумма расходов: {otherExpencesSum} грн.");
-                Console.WriteLine();
+                //var otherIncomesSum = db.CashBoxOperations.Where(n => n.CurrentData.Day == DateTime.Now.Day).Sum(s => s.OtherIncomes);
+                //var monthPaymentSum = databaseMonthPayment.MonthPaymentsSum(databaseMonthPayment);
+                //var otherExpencesSum = db.CashBoxOperations.Where(n => n.CurrentData.Day == DateTime.Now.Day).Sum(s => s.OtherExpenses);
+                //var workshopRentalSum = db.CashBoxOperations.Where(n => n.CurrentData.Day == DateTime.Now.Day).Sum(s => s.WorkshopRental);
+                //var communityHouseRental = db.CashBoxOperations.Where(n => n.CurrentData.Day == DateTime.Now.Day).Sum(s => s.CommunityHouseRental);
+               
+                //currentSumInCashBox = cashBoxOperation.BaseCashBoxSum + otherIncomesSum + monthPaymentSum
+                //                      - otherExpencesSum - workshopRentalSum - communityHouseRental;
+
+                //cashBoxOperation.PreviousMonthCashBoxSum = 
+                //var firstDatabaseElement = db.CashBoxOperations.Find(1);
+                //if (DateTime.Now.Day - firstDatabaseElement.CurrentData.Day > 1)
+                //    cashBoxOperation.BaseCashBoxSum = касса за предыдущий месяц
+                //  возможно создать свойство касса за месяц и сохранять его в БД
+                //    Console.WriteLine();
+                //else
+                //    cashBoxOperation.BaseCashBoxSum = 2500;
+
+
+                //Console.WriteLine($"Баланс по кассе: {currentSumInCashBox} грн.");
+                //Console.WriteLine($"\tКасса на начало месяца: {cashBoxOperation.BaseCashBoxSum} грн.  \tРасходы на мастерскую: {workshopRentalSum} грн.");
+                //Console.WriteLine($"\tОбщая сумма взносов: {monthPaymentSum} грн. \t\tРасходы на ангар: {communityHouseRental} грн.");
+                //Console.WriteLine($"\tСумма доходов: {otherIncomesSum} грн. \t\tСумма расходов: {otherExpencesSum} грн.");
+                //Console.WriteLine();
 
             }
-          return currentSumInCashBox;
+          //return currentSumInCashBox;
         }
 
-      
+        public int MonthSumInCashBox(DatabaseMonthPayment databaseMonthPayment, CashBoxOperation cashBoxOperation, int month, int baseCashBoxSum)
+        {
+            var currentSumInCashBox = 0;
 
-        // начисление по месяцам всех показателей (проверить изменение за текущий день)!!!
+
+            using (var db = new CashBoxDatabase())
+            {
+                var otherIncomesSum = db.CashBoxOperations.Where(n => n.CurrentData.Day == month).Sum(s => s.OtherIncomes);
+                var monthPaymentSum = databaseMonthPayment.MonthPaymentsSum(databaseMonthPayment);
+                var otherExpencesSum = db.CashBoxOperations.Where(n => n.CurrentData.Day == month).Sum(s => s.OtherExpenses);
+                var workshopRentalSum = db.CashBoxOperations.Where(n => n.CurrentData.Day == month).Sum(s => s.WorkshopRental);
+                var communityHouseRental = db.CashBoxOperations.Where(n => n.CurrentData.Day == month).Sum(s => s.CommunityHouseRental);
+
+                currentSumInCashBox = baseCashBoxSum + otherIncomesSum + monthPaymentSum
+                                      - otherExpencesSum - workshopRentalSum - communityHouseRental;
+                CashBoxBalancePrint(currentSumInCashBox, cashBoxOperation.BaseCashBoxSum, workshopRentalSum, monthPaymentSum, communityHouseRental, otherIncomesSum, otherExpencesSum);
+
+                //var firstDatabaseElement = db.CashBoxOperations.Find(1);
+                //if (DateTime.Now.Day - firstDatabaseElement.CurrentData.Day > 1)
+
+                //    Console.WriteLine();
+                //else
+                //    cashBoxOperation.BaseCashBoxSum = 2500;
+
+
+                //Console.WriteLine($"Баланс по кассе: {currentSumInCashBox} грн.");
+                //Console.WriteLine($"\tКасса на начало месяца: {cashBoxOperation.BaseCashBoxSum} грн.  \tРасходы на мастерскую: {workshopRentalSum} грн.");
+                //Console.WriteLine($"\tОбщая сумма взносов: {monthPaymentSum} грн. \t\tРасходы на ангар: {communityHouseRental} грн.");
+                //Console.WriteLine($"\tСумма доходов: {otherIncomesSum} грн. \t\tСумма расходов: {otherExpencesSum} грн.");
+                //Console.WriteLine();
+
+            }
+            return currentSumInCashBox;
+        }
+        public void CashBoxBalancePrint(int currentSumInCashBox, int baseCashBoxSum, int workshopRentalSum, int monthPaymentSum, int communityHouseRental, int otherIncomesSum, int otherExpencesSum)
+        {
+            Console.WriteLine($"Баланс по кассе: {currentSumInCashBox} грн.");
+            Console.WriteLine($"\tКасса на начало месяца: {baseCashBoxSum} грн.  \tРасходы на мастерскую: {workshopRentalSum} грн.");
+            Console.WriteLine($"\tОбщая сумма взносов: {monthPaymentSum} грн. \t\tРасходы на ангар: {communityHouseRental} грн.");
+            Console.WriteLine($"\tСумма доходов: {otherIncomesSum} грн. \t\tСумма расходов: {otherExpencesSum} грн.");
+            Console.WriteLine();
+        }
+        // изменять базовую сумму вначале месяца (доделать вывод на консоль и поменять дни на месяца)
+
+
         // написать условия по оплате за ангар и мастерскую
-        // изменять базовую сумму вначале месяца (доделать)
+
         // методы Парсинга
 
     }
