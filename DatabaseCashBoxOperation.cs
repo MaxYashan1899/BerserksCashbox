@@ -98,11 +98,11 @@ namespace BerserksCashbox
            
             using (var db = new CashBoxDatabase())
             {
-                var otherIncomesSum = db.CashBoxOperations.Where(n => n.CurrentData.Month == DateTime.Now.Month).Sum(s => s.OtherIncomes);
+                var otherIncomesSum = db.CashBoxOperations.Where(n => n.CurrentData.Day == DateTime.Now.Day).Sum(s => s.OtherIncomes);
                 var monthPaymentSum = databaseMonthPayment.MonthPaymentsSum(databaseMonthPayment);
-                var otherExpencesSum = db.CashBoxOperations.Where(n => n.CurrentData.Month == DateTime.Now.Month).Sum(s => s.OtherExpenses);
-                var workshopRentalSum = db.CashBoxOperations.Where(n => n.CurrentData.Month == DateTime.Now.Month).Sum(s => s.WorkshopRental);
-                var communityHouseRental = db.CashBoxOperations.Where(n => n.CurrentData.Month == DateTime.Now.Month).Sum(s => s.CommunityHouseRental);
+                var otherExpencesSum = db.CashBoxOperations.Where(n => n.CurrentData.Day == DateTime.Now.Day).Sum(s => s.OtherExpenses);
+                var workshopRentalSum = db.CashBoxOperations.Where(n => n.CurrentData.Day == DateTime.Now.Day).Sum(s => s.WorkshopRental);
+                var communityHouseRental = db.CashBoxOperations.Where(n => n.CurrentData.Day == DateTime.Now.Day).Sum(s => s.CommunityHouseRental);
                
                 currentSumInCashBox = cashBoxOperation.BaseCashBoxSum + otherIncomesSum + monthPaymentSum
                                       - otherExpencesSum - workshopRentalSum - communityHouseRental;

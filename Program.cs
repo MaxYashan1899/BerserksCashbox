@@ -52,7 +52,7 @@ namespace BerserksCashbox
                         case 1:
                             databaseMonthPayment.DatabaseInitialization(berserk1, berserk2, berserk3, berserk4);
                             monthPaymentOperations.GetMonthPayment(berserkMembers);
-                            databaseMonthPayment.DatabaseInfo(berserkMembers, databaseMonthPayment);
+                            databaseMonthPayment.DatabaseInfo(berserkMembers);
                             break;
                         case 2:
                             databaseCashBoxOperation.WorkshopRentalPayment(cashBoxOperation);
@@ -68,7 +68,7 @@ namespace BerserksCashbox
                             break;
                         case 6:
                             databaseMonthPayment.DatabaseInitialization(berserk1, berserk2, berserk3, berserk4);
-                            databaseMonthPayment.DatabaseInfo(berserkMembers, databaseMonthPayment);
+                            databaseMonthPayment.DatabaseInfo(berserkMembers);
                             break;
                         case 7:
                             databaseCashBoxOperation.TotalSumInCashBox(databaseMonthPayment, cashBoxOperation);

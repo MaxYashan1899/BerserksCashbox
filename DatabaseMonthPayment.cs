@@ -17,15 +17,14 @@ namespace BerserksCashbox
                 }
             }
         }
-       public void DatabaseInfo(List<BerserkMembers> berserkMembers, DatabaseMonthPayment databaseMonthPayment)
+       public void DatabaseInfo(List<BerserkMembers> berserkMembers)
         {
                using (var db = new BerserkMembersDatabase())
             {
                
                 var members = db.BerserkMembers;
                 var monthDifference = MonthDifference(DateTime.Now);
-                //var monthPaymentSum = MonthPaymentsSum(databaseMonthPayment);
-                foreach (var item in members)
+               foreach (var item in members)
                 {
                     item.CurrentDebt = item.StartDebt * (monthDifference + 1);
                     //item.MoneyBalance = item.CurrentPayment - item.CurrentDebt;
@@ -37,27 +36,23 @@ namespace BerserksCashbox
                 Console.WriteLine("Задолженность по людям:");
               
                 berserkMembers = db.BerserkMembers.ToList();
-                var max = berserkMembers.GroupBy(n => n.BerserksName).Select(m => m.FirstOrDefault());
+                var uniqueBerserksName = berserkMembers.GroupBy(n => n.BerserksName).Select(m => m.FirstOrDefault());
                 
-                foreach (var item in max)
+                foreach (var item in uniqueBerserksName)
                 {
-                    var a = db.BerserkMembers.Where(n => n.CurrentData.Month == DateTime.Now.Month).Where(m=>m.BerserksName == item.BerserksName).Sum(s => s.CurrentPayment);
-                    var b = a - item.CurrentDebt; 
-                    Console.WriteLine($"Имя:{item.BerserksName}\t - долг:{item.CurrentDebt} грн. \t - взнос:{a} грн. \t баланс: {b} грн.");
+                    var monthPaymentsSum = db.BerserkMembers.Where(d => d.CurrentData.Day == DateTime.Now.Day).Where(n=>n.BerserksName == item.BerserksName).Sum(s => s.CurrentPayment);
+                    var monthPaymentBalance = monthPaymentsSum - item.CurrentDebt; 
+                    Console.WriteLine($"Имя:{item.BerserksName}\t - долг:{item.CurrentDebt} грн. \t - взнос:{monthPaymentsSum} грн. \t баланс: {monthPaymentBalance} грн.");
                 }
             }
         }
         
        public int MonthDifference(DateTime currentData)
         {
-            int monthDifference=0;
+            int monthDifference = 0;
             using (var db = new BerserkMembersDatabase())
             {
-                var members = db.BerserkMembers;
-                foreach (var item in members)
-                {
-                 monthDifference = (currentData.Month - item.StartData.Month) + 12 * (currentData.Year - item.StartData.Year);
-                }
+                monthDifference = (currentData.Day - db.BerserkMembers.Find(1).StartData.Day) + 12 * (currentData.Year - db.BerserkMembers.Find(1).StartData.Year);
             }
             return monthDifference;
 
@@ -67,7 +62,7 @@ namespace BerserksCashbox
             var monthPaymentsSum = 0;
             using (var db = new BerserkMembersDatabase())
             {
-               monthPaymentsSum = db.BerserkMembers.Where(d=>d.CurrentData.Month == DateTime.Now.Month).Sum(p => p.CurrentPayment);
+               monthPaymentsSum = db.BerserkMembers.Where(d=>d.CurrentData.Day == DateTime.Now.Day).Sum(p => p.CurrentPayment);
             }
             
               return monthPaymentsSum;
@@ -75,8 +70,7 @@ namespace BerserksCashbox
    }
 }
 
-
-// общая сумма взносов, общий баланс по людям   - правильно назвать переменные  + проверки!!!
+//  указать месяц (ноябрь, декабрь)  - касса за декабрь
 
 // парсинг
 // проверки

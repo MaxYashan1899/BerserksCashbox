@@ -42,39 +42,25 @@ namespace BerserksCashbox
                 db.BerserkMembers.Add(newPaymentOperation);
                 currentMemberName.CurrentData = DateTime.Now;
 
-                // int[] monthPaymentsArray = new int[] {currentMemberName.NovemberPayments, currentMemberName.DecemberPayments,currentMemberName.JanuaryPayments};
-                // //for (int i = 0; i < monthPaymentsArray.Length; i++)
-                // //{
-                // //    if (MonthDifference(currentMemberName.CurrentData) == monthPaymentsArray[])
-                // //}
-                //foreach (var item in monthPaymentsArray)
-                // {
-                //     if (MonthDifference(currentMemberName.CurrentData) == item)
-                //     { 
-
-                //     }
-                // }
-
-
                 //currentMemberName.CurrentPayment += paymentSum;
                 Console.WriteLine($"{name} внес {paymentSum} грн.");
                 db.SaveChanges();
             }
         }
-        public int MonthDifference(DateTime currentData)
-        {
-            int monthDifference = 0;
-            using (var db = new BerserkMembersDatabase())
-            {
-                var members = db.BerserkMembers;
-                foreach (var item in members)
-                {
-                    monthDifference = (currentData.Month - item.StartData.Month) + 12 * (currentData.Year - item.StartData.Year);
-                }
-            }
-            return monthDifference;
+        //public int MonthDifference(DateTime currentData)
+        //{
+        //    int monthDifference = 0;
+        //    using (var db = new BerserkMembersDatabase())
+        //    {
+        //        var members = db.BerserkMembers;
+        //        foreach (var item in members)
+        //        {
+        //            monthDifference = (currentData.Day - item.StartData.Day) + 12 * (currentData.Year - item.StartData.Year);
+        //        }
+        //    }
+        //    return monthDifference;
 
-        }
+        //}
     }
 }
   // парсинг
