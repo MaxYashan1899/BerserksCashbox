@@ -64,10 +64,19 @@ namespace BerserksCashbox
             {
                monthPaymentsSum = db.BerserkMembers.Where(d=>d.CurrentData.Day == DateTime.Now.Day).Sum(p => p.CurrentPayment);
             }
-            
-              return monthPaymentsSum;
+            return monthPaymentsSum;
         }
-   }
+        public int PreviousMonthPaymentsSum(DatabaseMonthPayment databaseMonthPayment)
+        {
+            var monthPaymentsSum = 0;
+            using (var db = new BerserkMembersDatabase())
+            {
+                monthPaymentsSum = db.BerserkMembers.Where(d => d.CurrentData.Day < DateTime.Now.Day).Sum(p => p.CurrentPayment);
+            }
+             return monthPaymentsSum;
+        }
+    }
+    
 }
 
 //  указать месяц (ноябрь, декабрь)  - касса за декабрь
