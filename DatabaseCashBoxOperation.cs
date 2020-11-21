@@ -8,8 +8,7 @@ namespace BerserksCashbox
         enum MonthName { январь=1, февраль, март, апрель, май, июнь, июль, август, сентябрь, октябрь, ноябрь, декабрь};
         public int GetOtherExpenses(CashBoxOperation cashBoxOperation)
         {
-            Console.WriteLine("Введите сумму других расходов:");
-            var otherExpenses = int.Parse(Console.ReadLine());
+            var otherExpenses = ParseInt("Введите сумму других расходов");
 
             Console.WriteLine($"Сумма других расходов {otherExpenses} грн");
             var newOperation = new CashBoxOperation {OtherExpenses = otherExpenses, CurrentData = DateTime.Now };
@@ -23,8 +22,7 @@ namespace BerserksCashbox
         }
         public int GetOtherIncomes(CashBoxOperation cashBoxOperation)
         {
-            Console.WriteLine("Введите сумму других доходов:");
-            var otherIncomes = int.Parse(Console.ReadLine());
+            var otherIncomes = ParseInt("Введите сумму других доходов");
           
             Console.WriteLine($"Сумма других доходов {otherIncomes} грн");
             var newOperation = new CashBoxOperation { OtherIncomes = otherIncomes, CurrentData = DateTime.Now };
@@ -41,8 +39,7 @@ namespace BerserksCashbox
             int monthRentalSum = 800;
             int totalMonthRentalSum = monthRentalSum * MonthDifference();
          
-            Console.WriteLine("Введите суму оплаты за аренду общинного дома:");
-            int communityHouseRentalPayment = int.Parse(Console.ReadLine());
+            int communityHouseRentalPayment = ParseInt("Введите суму оплаты за аренду общинного дома");
             
             var newOperation = new CashBoxOperation { CommunityHouseRental = communityHouseRentalPayment, CurrentData = DateTime.Now };
 
@@ -50,6 +47,7 @@ namespace BerserksCashbox
             {
                 db.CashBoxOperations.Add(newOperation);
                 db.SaveChanges();
+
                 var communityHouseRentalPaymentSum = db.CashBoxOperations.Sum(p => p.CommunityHouseRental);
                 if (communityHouseRentalPaymentSum == totalMonthRentalSum)
                     Console.WriteLine($"Аренда общинного дома за {(MonthName)(DateTime.Now.Month)} оплачена");
@@ -69,17 +67,18 @@ namespace BerserksCashbox
         }
         public int WorkshopRentalPayment(CashBoxOperation cashBoxOperation)
         {
-
             int monthRentalSum = 1000;
             int totalMonthRentalSum = monthRentalSum * MonthDifference();
-            Console.WriteLine("Введите суму оплаты за аренду мастерской:");
-            int workshopRentalPayment = int.Parse(Console.ReadLine());
+
+            int workshopRentalPayment = ParseInt("Введите суму оплаты за аренду мастерской:");
+
             var newOperation = new CashBoxOperation { WorkshopRental = workshopRentalPayment, CurrentData = DateTime.Now};
 
             using (var db = new CashBoxDatabase())
             {
                 db.CashBoxOperations.Add(newOperation);
                 db.SaveChanges();
+
                 var workshopRentalPaymentSum = db.CashBoxOperations.Sum(p => p.WorkshopRental);
                 if (workshopRentalPaymentSum == totalMonthRentalSum)
                     Console.WriteLine("Аренда мастерской за {(MonthName)(DateTime.Now.Month)} оплачена");
@@ -216,9 +215,22 @@ namespace BerserksCashbox
             }
             return monthDifference;
         }
+
+        public static int ParseInt(string sum)
+        {
+            while (true)
+            {
+                Console.WriteLine($"{sum}:");
+                if (int.TryParse(Console.ReadLine(), out int value) && value > 0 )
+                {
+                    return value;
+                }
+                else 
+                {
+                    Console.WriteLine("Неверный формат введенных данных");
+                }
+            }
+        }
         //  поменять дни на месяца
-
-       // методы Парсинга
-
     }
 }
