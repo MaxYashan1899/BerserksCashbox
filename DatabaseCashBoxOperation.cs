@@ -5,6 +5,7 @@ namespace BerserksCashbox
 {
     class DatabaseCashBoxOperation
     {
+        enum Month { январь=1, февраль, март, апрель, май, июнь, июль, август, сентябрь, октябрь, ноябрь, декабрь };
         public int GetOtherExpenses(CashBoxOperation cashBoxOperation)
         {
             Console.WriteLine("Введите сумму других расходов:");
@@ -107,7 +108,7 @@ namespace BerserksCashbox
                 }
              }
         }
-
+       
         public int CurrentMonthCashBoxSum(DatabaseMonthPayment databaseMonthPayment, CashBoxOperation cashBoxOperation, int baseCashBoxSum)
         {
             var currentSumInCashBox = 0;
@@ -123,12 +124,12 @@ namespace BerserksCashbox
                 currentSumInCashBox = baseCashBoxSum + otherIncomesSum + monthPaymentSum
                                       - otherExpencesSum - workshopRentalSum - communityHouseRental;
                 
-                Console.WriteLine($"Баланс по кассе: {currentSumInCashBox} грн.");
+                Console.WriteLine($"Баланс по кассе за {(Month)(DateTime.Now.Month)}: {currentSumInCashBox} грн.");
                 Console.WriteLine($"\tКасса на начало месяца: {cashBoxOperation.BaseCashBoxSum} грн.  \tРасходы на мастерскую: {workshopRentalSum} грн.");
                 Console.WriteLine($"\tОбщая сумма взносов: {monthPaymentSum} грн. \t\tРасходы на ангар: {communityHouseRental} грн.");
                 Console.WriteLine($"\tСумма доходов: {otherIncomesSum} грн. \t\tСумма расходов: {otherExpencesSum} грн.");
                 Console.WriteLine();
-
+              
             }
             return currentSumInCashBox;
         }
@@ -146,8 +147,9 @@ namespace BerserksCashbox
 
                 currentSumInCashBox = baseCashBoxSum + otherIncomesSum + monthPaymentSum
                                       - otherExpencesSum - workshopRentalSum - communityHouseRental;
-               
-                Console.WriteLine($"Баланс по кассе: {currentSumInCashBox} грн.");
+                //if ()
+                //Month = DateTime.Now.Month - 1;
+                Console.WriteLine($"Баланс по кассе за {(Month)(DateTime.Now.Month-1)}: {currentSumInCashBox} грн.");
                 Console.WriteLine($"\tКасса на начало месяца: {cashBoxOperation.BaseCashBoxSum} грн.  \tРасходы на мастерскую: {workshopRentalSum} грн.");
                 Console.WriteLine($"\tОбщая сумма взносов: {monthPaymentSum} грн. \t\tРасходы на ангар: {communityHouseRental} грн.");
                 Console.WriteLine($"\tСумма доходов: {otherIncomesSum} грн. \t\tСумма расходов: {otherExpencesSum} грн.");
@@ -157,7 +159,7 @@ namespace BerserksCashbox
             return currentSumInCashBox;
         }
       
-        // изменять базовую сумму вначале месяца (доделать вывод на консоль и поменять дни на месяца)
+        //  поменять дни на месяца
 
 
         // написать условия по оплате за ангар и мастерскую

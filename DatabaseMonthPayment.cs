@@ -6,6 +6,7 @@ namespace BerserksCashbox
 {
    public class DatabaseMonthPayment
     {
+        enum Month { январь = 1, февраль, март, апрель, май, июнь, июль, август, сентябрь, октябрь, ноябрь, декабрь };
         public void DatabaseInitialization(object berserk1, object berserk2, object berserk3, object berserk4)
         {
             using (var db = new BerserkMembersDatabase())
@@ -33,7 +34,7 @@ namespace BerserksCashbox
                 db.SaveChanges();
               
                 Console.WriteLine();
-                Console.WriteLine("Задолженность по людям:");
+                Console.WriteLine($"Задолженность по людям за {(Month)(DateTime.Now.Month)}:") ;
               
                 berserkMembers = db.BerserkMembers.ToList();
                 var uniqueBerserksName = berserkMembers.GroupBy(n => n.BerserksName).Select(m => m.FirstOrDefault());
