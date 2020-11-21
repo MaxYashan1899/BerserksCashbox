@@ -6,29 +6,21 @@ namespace BerserksCashbox
 {
   public class MonthPaymentOperations
     {
-    
-        //enum Month
-        //{
-        //    NovemberPayments = 1,
-        //    December = 2,
-        //    January = 3
-        // }
- 
         public void GetMonthPayment(List<BerserkMembers> berserkMembers)
         {
-             Console.WriteLine("Введите имя плательщика:");
+            Console.WriteLine("Введите имя плательщика:");
             string name = Console.ReadLine();
             if (berserkMembers.Any(n=>n.BerserksName == name))
             {
-                Console.WriteLine("Введите сумму платежа:");
-                int paymentSum = int.Parse(Console.ReadLine());
-               
-       
-                MonthPaymentDatabase( name, paymentSum);
+                    Console.WriteLine("Введите сумму платежа:");
+                    if (int.TryParse(Console.ReadLine(), out int paymentSum) && paymentSum > 0)
+                        MonthPaymentDatabase(name, paymentSum);
+                    else
+                        Console.WriteLine("Неверный формат введенных данных");
             }
             else
             {
-                Console.WriteLine("Exception: неправильно введено имя");
+                Console.WriteLine("Введено неправильное имя");
             }
         }
 
@@ -36,33 +28,14 @@ namespace BerserksCashbox
         {
                using (var db = new BerserkMembersDatabase())
             {
-               
-                var currentMemberName = db.BerserkMembers.FirstOrDefault(n => n.BerserksName == name);
-                var newPaymentOperation = new BerserkMembers { BerserksName = name, CurrentPayment = paymentSum, CurrentData = DateTime.Now, StartData = DateTime.Now };
+                var newPaymentOperation = new BerserkMembers { BerserksName = name, CurrentPayment = paymentSum, CurrentDate = DateTime.Now };
                 db.BerserkMembers.Add(newPaymentOperation);
-                currentMemberName.CurrentData = DateTime.Now;
-
-                //currentMemberName.CurrentPayment += paymentSum;
                 Console.WriteLine($"{name} внес {paymentSum} грн.");
                 db.SaveChanges();
             }
         }
-        //public int MonthDifference(DateTime currentData)
-        //{
-        //    int monthDifference = 0;
-        //    using (var db = new BerserkMembersDatabase())
-        //    {
-        //        var members = db.BerserkMembers;
-        //        foreach (var item in members)
-        //        {
-        //            monthDifference = (currentData.Day - item.StartData.Day) + 12 * (currentData.Year - item.StartData.Year);
-        //        }
-        //    }
-        //    return monthDifference;
-
-        //}
+      
     }
 }
-  // парсинг
   // проверки
 

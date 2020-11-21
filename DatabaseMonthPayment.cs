@@ -25,7 +25,8 @@ namespace BerserksCashbox
                
                 var members = db.BerserkMembers;
                 var monthDifference = MonthDifference(DateTime.Now);
-               foreach (var item in members)
+
+                foreach (var item in members)
                 {
                     item.CurrentDebt = item.StartDebt * (monthDifference + 1);
                 }
@@ -41,7 +42,7 @@ namespace BerserksCashbox
                 foreach (var item in uniqueBerserksName)
                 {
                     var monthPaymentsSum = db.BerserkMembers
-                                           .Where(d => d.CurrentData.Day == DateTime.Now.Day)
+                                           .Where(d => d.CurrentDate.Day == DateTime.Now.Day)
                                            .Where(n=>n.BerserksName == item.BerserksName)
                                            .Sum(s => s.CurrentPayment);
                     var monthPaymentBalance = monthPaymentsSum - item.CurrentDebt; 
@@ -56,20 +57,21 @@ namespace BerserksCashbox
             int monthDifference = 0;
             using (var db = new BerserkMembersDatabase())
             {
-                monthDifference = (currentData.Day - db.BerserkMembers.Find(1).StartData.Day) 
-                                  + 12 * (currentData.Year - db.BerserkMembers.Find(1).StartData.Year);
+                monthDifference = (currentData.Day - db.BerserkMembers.Find(1).CurrentDate.Day) 
+                                  + 12 * (currentData.Year - db.BerserkMembers.Find(1).CurrentDate.Year);
             }
             return monthDifference;
 
         }
+       
         public int MonthPaymentsSum(DatabaseMonthPayment databaseMonthPayment)
         {
             var monthPaymentsSum = 0;
             using (var db = new BerserkMembersDatabase())
             {
                monthPaymentsSum = db.BerserkMembers
-                                  .Where(y => y.CurrentData.Year == DateTime.Now.Year)
-                                  .Where(d=>d.CurrentData.Day == DateTime.Now.Day)
+                                  .Where(y => y.CurrentDate.Year == DateTime.Now.Year)
+                                  .Where(d=>d.CurrentDate.Day == DateTime.Now.Day)
                                   .Sum(p => p.CurrentPayment);
             }
             return monthPaymentsSum;
@@ -80,12 +82,12 @@ namespace BerserksCashbox
             using (var db = new BerserkMembersDatabase())
             {
                 monthPaymentsSum = db.BerserkMembers
-                                  .Where(n => n.CurrentData.Year < DateTime.Now.Year)
-                                  .Where(n => n.CurrentData.Day < DateTime.Now.Day + 12)
+                                  .Where(n => n.CurrentDate.Year < DateTime.Now.Year)
+                                  .Where(n => n.CurrentDate.Day < DateTime.Now.Day + 12)
                                   .Sum(p => p.CurrentPayment)
                                   + db.BerserkMembers
-                                  .Where(n => n.CurrentData.Year == DateTime.Now.Year)
-                                  .Where(d => d.CurrentData.Day < DateTime.Now.Day)
+                                  .Where(n => n.CurrentDate.Year == DateTime.Now.Year)
+                                  .Where(d => d.CurrentDate.Day < DateTime.Now.Day)
                                   .Sum(p => p.CurrentPayment);
             }
              return monthPaymentsSum;
@@ -95,5 +97,5 @@ namespace BerserksCashbox
 }
 
 // поменять дни на месяца в рассчетах данных
-// парсинг
+// разделить класс на несколько
 // проверки

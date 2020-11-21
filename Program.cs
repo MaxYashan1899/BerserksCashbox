@@ -22,10 +22,10 @@ namespace BerserksCashbox
             var add_RemoveBerserksMember = new Add_RemoveBerserksMember();
     
             #region Инициализация объектами
-            BerserkMembers berserk1 = new BerserkMembers { BerserksName = "Ragnar", StartDebt = 250, StartData = DateTime.Now};
-            BerserkMembers berserk2 = new BerserkMembers { BerserksName = "Ottar", StartDebt = 250, StartData = DateTime.Now};
-            BerserkMembers berserk3 = new BerserkMembers { BerserksName = "Torbiorn", StartDebt = 250, StartData = DateTime.Now};
-            BerserkMembers berserk4 = new BerserkMembers { BerserksName = "Eivar", StartDebt = 150, StartData = DateTime.Now };
+            BerserkMembers berserk1 = new BerserkMembers { BerserksName = "Ragnar", StartDebt = 250, CurrentDate = DateTime.Now};
+            BerserkMembers berserk2 = new BerserkMembers { BerserksName = "Ottar", StartDebt = 250, CurrentDate = DateTime.Now};
+            BerserkMembers berserk3 = new BerserkMembers { BerserksName = "Torbiorn", StartDebt = 250, CurrentDate = DateTime.Now};
+            BerserkMembers berserk4 = new BerserkMembers { BerserksName = "Eivar", StartDebt = 150, CurrentDate = DateTime.Now };
             berserkMembers.Add(berserk1);
             berserkMembers.Add(berserk2);
             berserkMembers.Add(berserk3);
@@ -55,10 +55,10 @@ namespace BerserksCashbox
                             databaseMonthPayment.DatabaseInfo(berserkMembers);
                             break;
                         case 2:
-                            databaseCashBoxOperation.WorkshopRentalPayment(cashBoxOperation);
+                            databaseCashBoxOperation.WorkshopRentalPayment(cashBoxOperation, databaseMonthPayment);
                             break;
                         case 3:
-                            databaseCashBoxOperation.CommunityHouseRentalPayment(cashBoxOperation);
+                            databaseCashBoxOperation.CommunityHouseRentalPayment(cashBoxOperation, databaseMonthPayment);
                             break;
                         case 4:
                             databaseCashBoxOperation.GetOtherExpenses(cashBoxOperation);
@@ -94,7 +94,6 @@ namespace BerserksCashbox
     }
 }
 
-// парсинг, проверка
 
 // добавить \удалить нового члена клуба  -  ошибка при новом запуске консоли
 // редактирование (код и вывод на консоль)
