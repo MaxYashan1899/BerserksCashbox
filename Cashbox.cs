@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.ComponentModel.DataAnnotations;
 
-namespace BerserksCashbox
+namespace CHRBerserk.BerserksCashbox
 {
     public class CashBoxOperation
     {
+        [Key]
         public int Id { get; set; }
         public int WorkshopRental { get; set; }
         public int CommunityHouseRental { get; set; }
@@ -16,6 +15,5 @@ namespace BerserksCashbox
         public DateTime CurrentDate { get; set; }
 
         public CashBoxOperation() {  }
-
-    }
+     }
 }

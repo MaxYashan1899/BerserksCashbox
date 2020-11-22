@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 
-
-namespace BerserksCashbox
+namespace CHRBerserk.BerserksCashbox
 {
     class Program
     {
@@ -15,11 +12,11 @@ namespace BerserksCashbox
 
             var cashBoxOperation = new CashBoxOperation() { BaseCashBoxSum = 2500 };
             var cashBoxReport = new CashBoxReport();
-            var databaseCashBoxOperation = new DatabaseCashBoxOperation();
-            var databaseMonthPayment = new DatabaseMonthPayment();
+            var databaseCashBoxOperation = new CashBoxDatabaseOperation();
+            var databaseMonthInfo = new BerserkMembersDatabaseInfo();
             var berserkMembers = new List<BerserkMembers>();
 
-            var monthPaymentOperations = new MonthPaymentOperations();
+            var monthPaymentOperations = new BerserkMembersMonthPaymentOperations();
             var add_RemoveBerserksMember = new Add_RemoveBerserksMember();
     
             #region Инициализация объектами
@@ -51,15 +48,15 @@ namespace BerserksCashbox
                     switch (number)
                     {
                         case 1:
-                            databaseMonthPayment.DatabaseInitialization(berserk1, berserk2, berserk3, berserk4);
+                            databaseMonthInfo.DatabaseInitialization(berserk1, berserk2, berserk3, berserk4);
                             monthPaymentOperations.GetMonthPayment(berserkMembers);
-                            databaseMonthPayment.DatabaseInfo(berserkMembers);
+                            databaseMonthInfo.DatabaseInfo(berserkMembers);
                             break;
                         case 2:
-                            databaseCashBoxOperation.WorkshopRentalPayment(cashBoxOperation, databaseMonthPayment);
+                            databaseCashBoxOperation.WorkshopRentalPayment(cashBoxOperation, databaseMonthInfo);
                             break;
                         case 3:
-                            databaseCashBoxOperation.CommunityHouseRentalPayment(cashBoxOperation, databaseMonthPayment);
+                            databaseCashBoxOperation.CommunityHouseRentalPayment(cashBoxOperation, databaseMonthInfo);
                             break;
                         case 4:
                             databaseCashBoxOperation.GetOtherExpenses(cashBoxOperation);
@@ -68,14 +65,14 @@ namespace BerserksCashbox
                             databaseCashBoxOperation.GetOtherIncomes(cashBoxOperation);
                             break;
                         case 6:
-                            databaseMonthPayment.DatabaseInitialization(berserk1, berserk2, berserk3, berserk4);
-                            databaseMonthPayment.DatabaseInfo(berserkMembers);
+                            databaseMonthInfo.DatabaseInitialization(berserk1, berserk2, berserk3, berserk4);
+                            databaseMonthInfo.DatabaseInfo(berserkMembers);
                             break;
                         case 7:
-                            cashBoxReport.TotalSumInCashBox(databaseMonthPayment, cashBoxOperation);
+                            cashBoxReport.TotalSumInCashBox(monthPaymentOperations, databaseMonthInfo, cashBoxOperation);
                             break;
                         case 8:
-                            databaseMonthPayment.DatabaseInitialization(berserk1, berserk2, berserk3, berserk4);
+                            databaseMonthInfo.DatabaseInitialization(berserk1, berserk2, berserk3, berserk4);
                             add_RemoveBerserksMember.AddAndRemoveMembers(berserkMembers);
                             break;
                         case 9:
@@ -97,6 +94,5 @@ namespace BerserksCashbox
 
 
 // добавить \удалить нового члена клуба  -  ошибка при новом запуске консоли
-// редактирование (код и вывод на консоль)
 
 // чтение имен с файла 

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace BerserksCashbox
+namespace CHRBerserk.BerserksCashbox
 {
     public class Add_RemoveBerserksMember
     {

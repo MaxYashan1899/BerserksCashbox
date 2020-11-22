@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace BerserksCashbox
+namespace CHRBerserk.BerserksCashbox
 {
     public class CashBoxDatabase : DbContext
     {
