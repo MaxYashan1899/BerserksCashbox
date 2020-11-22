@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace CHRBerserk.BerserksCashbox
 {
-    class CashBoxDatabaseOperation
+   public class CashBoxDatabaseOperation
     {
         enum MonthName { январь = 1, февраль, март, апрель, май, июнь, июль, август, сентябрь, октябрь, ноябрь, декабрь };
         public int GetOtherExpenses(CashBoxOperation cashBoxOperation)
@@ -73,7 +73,7 @@ namespace CHRBerserk.BerserksCashbox
             return cashBoxOperation.WorkshopRental;
         }
 
-        private static int ParseInt(string sum)
+        public static int ParseInt(string sum)
         {
             while (true)
             {

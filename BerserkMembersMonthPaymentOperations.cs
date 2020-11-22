@@ -10,17 +10,20 @@ namespace CHRBerserk.BerserksCashbox
         {
             Console.WriteLine("Введите имя плательщика:");
             string name = Console.ReadLine();
-            if (berserkMembers.Any(n=>n.BerserksName == name))
+            using (var db = new BerserkMembersDatabase())
             {
+                if (db.BerserkMembers.Any(n => n.BerserksName == name))
+                {
                     Console.WriteLine("Введите сумму платежа:");
                     if (int.TryParse(Console.ReadLine(), out int paymentSum) && paymentSum > 0)
                         MonthPaymentToDatabase(name, paymentSum);
                     else
                         Console.WriteLine("Неверный формат введенных данных");
-            }
-            else
-            {
-                Console.WriteLine("Введено неправильное имя");
+                }
+                else
+                {
+                    Console.WriteLine("Введено неправильное имя");
+                }
             }
         }
 

@@ -4,11 +4,10 @@ using System.Linq;
 
 namespace CHRBerserk.BerserksCashbox
 {
-    public class Add_RemoveBerserksMember
+    public class Add_RemoveBerserkMembers
     {
         public void AddAndRemoveMembers(List<BerserkMembers> berserkMembers)
-          {
-            
+        {
             bool flag = true;
             while (flag)
             {
@@ -21,12 +20,12 @@ namespace CHRBerserk.BerserksCashbox
                     switch (number)
                     {
                         case 1:
-                            AddNewMember();
+                            AddNewMember(berserkMembers);
                             break;
                         case 2:
-                            RemoveMember();
+                            RemoveMember(berserkMembers);
                             break;
-                       case 3:
+                        case 3:
                             flag = false;
                             continue;
                     }
@@ -36,56 +35,61 @@ namespace CHRBerserk.BerserksCashbox
                     Console.WriteLine(ex.Message);
                 }
             }
+        }
 
-       
-                void AddNewMember()
+        public void AddNewMember(List<BerserkMembers> berserkMembers)
             {
                 var flag = true;
                 while (flag)
                 {
                     Console.WriteLine("Введите имя нового члена клуба:");
                     string name = Console.ReadLine();
-                    if ( berserkMembers.Any(n => n.BerserksName == name))
+
+                using (var db = new BerserkMembersDatabase())
+                {
+                    if (db.BerserkMembers.Any(n => n.BerserksName == name))
                         Console.WriteLine("Такое имя уже существует");
+                    else if (String.IsNullOrEmpty(name))
+                        throw new ArgumentNullException("Имя не может быть пустым", nameof(name));
                     else
                     {
-                        Console.WriteLine("Введите сумму ежемесячного взноса:");
-                        int monthPaymentSum = int.Parse(Console.ReadLine());
-                        var newMember = new BerserkMembers { BerserksName = name, StartDebt = monthPaymentSum, CurrentDate = DateTime.Now };
+                        int monthPaymentSum = CashBoxDatabaseOperation.ParseInt("Введите сумму ежемесячного взноса:");
+
+                        BerserkMembers newMember = new BerserkMembers { BerserksName = name, StartDebt = monthPaymentSum, CurrentDate = DateTime.Now };
                         berserkMembers.Add(newMember);
                         Console.WriteLine($"{name} добавлен в члены клуба");
-                        using (var db = new BerserkMembersDatabase())
-                        {
-                            db.BerserkMembers.Add(newMember);
-                            db.SaveChanges();
-                        }
+
+                        db.BerserkMembers.Add(newMember);
+                        db.SaveChanges();
+                     
                         flag = false;
                     }
                 }
-
-            }
-            void RemoveMember()
+           }
+        }
+        public void RemoveMember(List<BerserkMembers> berserkMembers)
             {
                 var flag = true;
-                while (flag)
+            while (flag)
+            {
+                Console.WriteLine("Введите имя члена клуба для удаления:");
+                string name = Console.ReadLine();
+
+                using (var db = new BerserkMembersDatabase())
                 {
-                    Console.WriteLine("Введите имя члена клуба для удаления:");
-                    string name = Console.ReadLine();
-                    if (berserkMembers.All(n => n.BerserksName != name))
-                    {
+                    if (db.BerserkMembers.All(n => n.BerserksName != name))
                         Console.WriteLine("Такого имени не существует");
-                        
-                    }
+                    else if (String.IsNullOrEmpty(name))
+                        throw new ArgumentNullException("Имя не может быть пустым", nameof(name));
                     else
                     {
                         var memberForRemove = berserkMembers.First(n => n.BerserksName == name);
                         berserkMembers.Remove(memberForRemove);
                         Console.WriteLine($"{name} удален из членов клуба");
-                        using (var db = new BerserkMembersDatabase())
-                        {
-                            db.BerserkMembers.Remove(memberForRemove);
-                            db.SaveChanges();
-                        }
+
+                        db.BerserkMembers.Remove(memberForRemove);
+                        db.SaveChanges();
+                      
                         flag = false;
                     }
                 }
@@ -94,7 +98,6 @@ namespace CHRBerserk.BerserksCashbox
     }
 }
 
-// парсинг, проверки
-// упорядочить методы
-// удаление, добавление (обработать ошибки вывода)
+// удаление, добавление (обработать ошибки вывода) 
+// Ввести СтартДату (чтоб вычеслять месячный долг добавленным людям)
 

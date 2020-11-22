@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CHRBerserk.BerserksCashbox
 {
@@ -17,7 +18,7 @@ namespace CHRBerserk.BerserksCashbox
             var berserkMembers = new List<BerserkMembers>();
 
             var monthPaymentOperations = new BerserkMembersMonthPaymentOperations();
-            var add_RemoveBerserksMember = new Add_RemoveBerserksMember();
+            var add_RemoveBerserksMember = new Add_RemoveBerserkMembers();
     
             #region Инициализация объектами
             BerserkMembers berserk1 = new BerserkMembers { BerserksName = "Ragnar", StartDebt = 250, CurrentDate = DateTime.Now};
@@ -28,8 +29,16 @@ namespace CHRBerserk.BerserksCashbox
             berserkMembers.Add(berserk2);
             berserkMembers.Add(berserk3);
             berserkMembers.Add(berserk4);
+            using (var db = new BerserkMembersDatabase())
+            {
+                if (db.BerserkMembers.Count() == 0)
+                {
+                    db.BerserkMembers.AddRange(berserk1,berserk2,berserk3,berserk4);
+                    db.SaveChanges();
+                }
+            }
             #endregion
-            
+
             bool flag = true;
             while (flag)
             {
@@ -48,7 +57,6 @@ namespace CHRBerserk.BerserksCashbox
                     switch (number)
                     {
                         case 1:
-                            databaseMonthInfo.DatabaseInitialization(berserk1, berserk2, berserk3, berserk4);
                             monthPaymentOperations.GetMonthPayment(berserkMembers);
                             databaseMonthInfo.DatabaseInfo(berserkMembers);
                             break;
@@ -65,14 +73,12 @@ namespace CHRBerserk.BerserksCashbox
                             databaseCashBoxOperation.GetOtherIncomes(cashBoxOperation);
                             break;
                         case 6:
-                            databaseMonthInfo.DatabaseInitialization(berserk1, berserk2, berserk3, berserk4);
                             databaseMonthInfo.DatabaseInfo(berserkMembers);
                             break;
                         case 7:
                             cashBoxReport.TotalSumInCashBox(monthPaymentOperations, databaseMonthInfo, cashBoxOperation);
                             break;
                         case 8:
-                            databaseMonthInfo.DatabaseInitialization(berserk1, berserk2, berserk3, berserk4);
                             add_RemoveBerserksMember.AddAndRemoveMembers(berserkMembers);
                             break;
                         case 9:
@@ -87,9 +93,17 @@ namespace CHRBerserk.BerserksCashbox
                     Console.WriteLine(ex.Message);
                     Console.ForegroundColor = color;
                 }
-             }
+                //using (var db = new BerserkMembersDatabase())
+                //{
+                
+                //foreach (var item in db.BerserkMembers)
+
+                //        Console.WriteLine(item.BerserksName);
+                //}
+            }
         }
     }
+
 }
 
 

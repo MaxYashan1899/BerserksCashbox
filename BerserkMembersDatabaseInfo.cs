@@ -7,17 +7,7 @@ namespace CHRBerserk.BerserksCashbox
    public class BerserkMembersDatabaseInfo
     {
         enum MonthName { январь = 1, февраль, март, апрель, май, июнь, июль, август, сентябрь, октябрь, ноябрь, декабрь };
-        public void DatabaseInitialization(object berserk1, object berserk2, object berserk3, object berserk4)
-        {
-            using (var db = new BerserkMembersDatabase())
-            {
-                if (db.BerserkMembers.Count() == 0)
-                {
-                    db.BerserkMembers.AddRange((BerserkMembers)berserk1, (BerserkMembers)berserk2, (BerserkMembers)berserk3, (BerserkMembers)berserk4);
-                    db.SaveChanges();
-                }
-            }
-        }
+
        public void DatabaseInfo(List<BerserkMembers> berserkMembers)
         {
                using (var db = new BerserkMembersDatabase())
