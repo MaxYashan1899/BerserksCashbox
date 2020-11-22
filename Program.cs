@@ -14,6 +14,7 @@ namespace BerserksCashbox
             Console.OutputEncoding = System.Text.Encoding.UTF8;
 
             var cashBoxOperation = new CashBoxOperation() { BaseCashBoxSum = 2500 };
+            var cashBoxReport = new CashBoxReport();
             var databaseCashBoxOperation = new DatabaseCashBoxOperation();
             var databaseMonthPayment = new DatabaseMonthPayment();
             var berserkMembers = new List<BerserkMembers>();
@@ -71,7 +72,7 @@ namespace BerserksCashbox
                             databaseMonthPayment.DatabaseInfo(berserkMembers);
                             break;
                         case 7:
-                            databaseCashBoxOperation.TotalSumInCashBox(databaseMonthPayment, cashBoxOperation);
+                            cashBoxReport.TotalSumInCashBox(databaseMonthPayment, cashBoxOperation);
                             break;
                         case 8:
                             databaseMonthPayment.DatabaseInitialization(berserk1, berserk2, berserk3, berserk4);
