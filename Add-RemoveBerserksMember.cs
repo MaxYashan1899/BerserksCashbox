@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
-namespace BerserksCashbox
+namespace CHRBerserk.BerserksCashbox
 {
     public class Add_RemoveBerserksMember
     {
-       
         public void AddAndRemoveMembers(List<BerserkMembers> berserkMembers)
           {
             
@@ -53,7 +51,7 @@ namespace BerserksCashbox
                     {
                         Console.WriteLine("Введите сумму ежемесячного взноса:");
                         int monthPaymentSum = int.Parse(Console.ReadLine());
-                        var newMember = new BerserkMembers { BerserksName = name, StartDebt = monthPaymentSum, StartData = DateTime.Now };
+                        var newMember = new BerserkMembers { BerserksName = name, StartDebt = monthPaymentSum, CurrentDate = DateTime.Now };
                         berserkMembers.Add(newMember);
                         Console.WriteLine($"{name} добавлен в члены клуба");
                         using (var db = new BerserkMembersDatabase())
@@ -98,4 +96,5 @@ namespace BerserksCashbox
 
 // парсинг, проверки
 // упорядочить методы
+// удаление, добавление (обработать ошибки вывода)
 

@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 
-
-namespace BerserksCashbox
+namespace CHRBerserk.BerserksCashbox
 {
     class Program
     {
@@ -14,18 +11,19 @@ namespace BerserksCashbox
             Console.OutputEncoding = System.Text.Encoding.UTF8;
 
             var cashBoxOperation = new CashBoxOperation() { BaseCashBoxSum = 2500 };
-            var databaseCashBoxOperation = new DatabaseCashBoxOperation();
-            var databaseMonthPayment = new DatabaseMonthPayment();
+            var cashBoxReport = new CashBoxReport();
+            var databaseCashBoxOperation = new CashBoxDatabaseOperation();
+            var databaseMonthInfo = new BerserkMembersDatabaseInfo();
             var berserkMembers = new List<BerserkMembers>();
 
-            var monthPaymentOperations = new MonthPaymentOperations();
+            var monthPaymentOperations = new BerserkMembersMonthPaymentOperations();
             var add_RemoveBerserksMember = new Add_RemoveBerserksMember();
     
             #region Инициализация объектами
-            BerserkMembers berserk1 = new BerserkMembers { BerserksName = "Ragnar", StartDebt = 250, StartData = DateTime.Now};
-            BerserkMembers berserk2 = new BerserkMembers { BerserksName = "Ottar", StartDebt = 250, StartData = DateTime.Now};
-            BerserkMembers berserk3 = new BerserkMembers { BerserksName = "Torbiorn", StartDebt = 250, StartData = DateTime.Now};
-            BerserkMembers berserk4 = new BerserkMembers { BerserksName = "Eivar", StartDebt = 150, StartData = DateTime.Now };
+            BerserkMembers berserk1 = new BerserkMembers { BerserksName = "Ragnar", StartDebt = 250, CurrentDate = DateTime.Now};
+            BerserkMembers berserk2 = new BerserkMembers { BerserksName = "Ottar", StartDebt = 250, CurrentDate = DateTime.Now};
+            BerserkMembers berserk3 = new BerserkMembers { BerserksName = "Torbiorn", StartDebt = 250, CurrentDate = DateTime.Now};
+            BerserkMembers berserk4 = new BerserkMembers { BerserksName = "Eivar", StartDebt = 150, CurrentDate = DateTime.Now };
             berserkMembers.Add(berserk1);
             berserkMembers.Add(berserk2);
             berserkMembers.Add(berserk3);
@@ -50,15 +48,15 @@ namespace BerserksCashbox
                     switch (number)
                     {
                         case 1:
-                            databaseMonthPayment.DatabaseInitialization(berserk1, berserk2, berserk3, berserk4);
+                            databaseMonthInfo.DatabaseInitialization(berserk1, berserk2, berserk3, berserk4);
                             monthPaymentOperations.GetMonthPayment(berserkMembers);
-                            databaseMonthPayment.DatabaseInfo(berserkMembers);
+                            databaseMonthInfo.DatabaseInfo(berserkMembers);
                             break;
                         case 2:
-                            databaseCashBoxOperation.WorkshopRentalPayment(cashBoxOperation);
+                            databaseCashBoxOperation.WorkshopRentalPayment(cashBoxOperation, databaseMonthInfo);
                             break;
                         case 3:
-                            databaseCashBoxOperation.CommunityHouseRentalPayment(cashBoxOperation);
+                            databaseCashBoxOperation.CommunityHouseRentalPayment(cashBoxOperation, databaseMonthInfo);
                             break;
                         case 4:
                             databaseCashBoxOperation.GetOtherExpenses(cashBoxOperation);
@@ -67,14 +65,14 @@ namespace BerserksCashbox
                             databaseCashBoxOperation.GetOtherIncomes(cashBoxOperation);
                             break;
                         case 6:
-                            databaseMonthPayment.DatabaseInitialization(berserk1, berserk2, berserk3, berserk4);
-                            databaseMonthPayment.DatabaseInfo(berserkMembers);
+                            databaseMonthInfo.DatabaseInitialization(berserk1, berserk2, berserk3, berserk4);
+                            databaseMonthInfo.DatabaseInfo(berserkMembers);
                             break;
                         case 7:
-                            databaseCashBoxOperation.TotalSumInCashBox(databaseMonthPayment, cashBoxOperation);
+                            cashBoxReport.TotalSumInCashBox(monthPaymentOperations, databaseMonthInfo, cashBoxOperation);
                             break;
                         case 8:
-                            databaseMonthPayment.DatabaseInitialization(berserk1, berserk2, berserk3, berserk4);
+                            databaseMonthInfo.DatabaseInitialization(berserk1, berserk2, berserk3, berserk4);
                             add_RemoveBerserksMember.AddAndRemoveMembers(berserkMembers);
                             break;
                         case 9:
@@ -94,9 +92,7 @@ namespace BerserksCashbox
     }
 }
 
-// парсинг, проверка
 
 // добавить \удалить нового члена клуба  -  ошибка при новом запуске консоли
-// редактирование (код и вывод на консоль)
 
 // чтение имен с файла 
