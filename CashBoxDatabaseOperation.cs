@@ -37,8 +37,9 @@ namespace CHRBerserk.BerserksCashbox
         public int CommunityHouseRentalPayment(CashBoxOperation cashBoxOperation, BerserkMembersDatabaseInfo databaseMonthInfo)
         {
             int monthRentalSum = 800;
-            int totalRentalDebtSum = monthRentalSum * (databaseMonthInfo.MonthDifference(DateTime.Now)+1);
-         
+            //int totalRentalDebtSum = monthRentalSum * (databaseMonthInfo.MonthDifference(DateTime.Now)+1);
+            int totalRentalDebtSum = monthRentalSum * (MonthDifference(DateTime.Now) + 1);
+
             int communityHouseRentalPayment = ParseInt("Введите суму оплаты за аренду общинного дома");
             
             var newOperation = new CashBoxOperation { CommunityHouseRental = communityHouseRentalPayment, CurrentDate = DateTime.Now };
@@ -49,14 +50,15 @@ namespace CHRBerserk.BerserksCashbox
                 db.SaveChanges();
 
                 var communityHouseRentalPaymentSum = db.CashBoxOperations.Sum(p => p.CommunityHouseRental);
-                RentalPaymentsReport(communityHouseRentalPaymentSum, totalRentalDebtSum);
+                RentalPaymentsReport(communityHouseRentalPaymentSum, totalRentalDebtSum, "общинного дома");
             }
             return cashBoxOperation.CommunityHouseRental;
         }
         public int WorkshopRentalPayment(CashBoxOperation cashBoxOperation, BerserkMembersDatabaseInfo databaseMonthInfo)
         {
             int monthRentalSum = 1000;
-            int totalRentalDebtSum = monthRentalSum * (databaseMonthInfo.MonthDifference(DateTime.Now)+1);
+            //int totalRentalDebtSum = monthRentalSum * (databaseMonthInfo.MonthDifference(DateTime.Now)+1);
+            int totalRentalDebtSum = monthRentalSum * (MonthDifference(DateTime.Now) + 1);
 
             int workshopRentalPayment = ParseInt("Введите суму оплаты за аренду мастерской");
 
@@ -68,7 +70,7 @@ namespace CHRBerserk.BerserksCashbox
                 db.SaveChanges();
 
                 var workshopRentalPaymentSum = db.CashBoxOperations.Sum(p => p.WorkshopRental);
-                RentalPaymentsReport(workshopRentalPaymentSum, totalRentalDebtSum);
+                RentalPaymentsReport(workshopRentalPaymentSum, totalRentalDebtSum, "мастерской");
             }
             return cashBoxOperation.WorkshopRental;
         }
@@ -84,20 +86,30 @@ namespace CHRBerserk.BerserksCashbox
                     Console.WriteLine("Неверный формат введенных данных");
             }
         }
-        private static void RentalPaymentsReport(int rentalPaymentsSum, int rentalDebtSum)
+        private static void RentalPaymentsReport(int rentalPaymentsSum, int rentalDebtSum, string name)
         {
             if (rentalPaymentsSum == rentalDebtSum)
-                Console.WriteLine($"Аренда общинного дома за {(MonthName)(DateTime.Now.Month)} оплачена");
+                Console.WriteLine($"Аренда {name} за {(MonthName)(DateTime.Now.Month)} оплачена");
             else if (rentalPaymentsSum < rentalDebtSum)
             {
                 int difference = rentalDebtSum - rentalPaymentsSum;
-                Console.WriteLine($"Оплачена не полная сума. Долг за аренду общинного дома за {(MonthName)(DateTime.Now.Month)} составляет {difference} грн.");
+                Console.WriteLine($"Оплачена не полная сума. Долг за аренду {name} за {(MonthName)(DateTime.Now.Month)} составляет {difference} грн.");
             }
             else
             {
                 int difference = rentalPaymentsSum - rentalDebtSum;
-                Console.WriteLine($"Переплата за аренду общинного дома за {(MonthName)(DateTime.Now.Month)} на {difference} грн");
+                Console.WriteLine($"Переплата за аренду {name} за {(MonthName)(DateTime.Now.Month)} на {difference} грн");
             }
+        }
+        public int MonthDifference(DateTime currentData)
+        {
+            int monthDifference = 0;
+            using (var db = new BerserkMembersDatabase())
+            {
+                monthDifference = (currentData.Day - db.BerserkMembers.Find(1).CurrentDate.Day)
+                                  + 12 * (currentData.Year - db.BerserkMembers.Find(1).CurrentDate.Year);
+            }
+            return monthDifference;
         }
     }
 }

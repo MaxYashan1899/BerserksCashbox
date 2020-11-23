@@ -31,7 +31,8 @@ namespace CHRBerserk.BerserksCashbox
         {
                using (var db = new BerserkMembersDatabase())
             {
-                var newPaymentOperation = new BerserkMembers { BerserksName = name, CurrentPayment = paymentSum, CurrentDate = DateTime.Now };
+                var firstRecordCurrentMember = db.BerserkMembers.Where(n => n.BerserksName == name).First();
+                var newPaymentOperation = new BerserkMembers { BerserksName = name, CurrentPayment = paymentSum, CurrentDate = DateTime.Now, StartDate = firstRecordCurrentMember.StartDate };
                 db.BerserkMembers.Add(newPaymentOperation);
                 Console.WriteLine($"{name} внес {paymentSum} грн.");
                 db.SaveChanges();

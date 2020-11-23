@@ -39,20 +39,36 @@ namespace CHRBerserk.BerserksCashbox
                     Console.WriteLine($"Имя:{item.BerserksName}\t - долг:{item.CurrentDebt} грн." +
                      $" \t - взнос:{memberMonthPaymentsSum} грн. \t баланс: {monthPaymentBalance} грн.");
                 }
-            }
+           }
+           
         }
-        
-       public int MonthDifference(DateTime currentData)
+
+        //public int MonthDifference(DateTime currentData)
+        //{
+        //    int monthDifference = 0;
+        //    using (var db = new BerserkMembersDatabase())
+        //    {
+        //        monthDifference = (currentData.Day - db.BerserkMembers.Find(1).CurrentDate.Day)
+        //                          + 12 * (currentData.Year - db.BerserkMembers.Find(1).CurrentDate.Year);
+        //    }
+        //    return monthDifference;
+        //}
+        public int MonthDifference(DateTime currentData)
         {
             int monthDifference = 0;
             using (var db = new BerserkMembersDatabase())
             {
-                monthDifference = (currentData.Day - db.BerserkMembers.Find(1).CurrentDate.Day) 
-                                  + 12 * (currentData.Year - db.BerserkMembers.Find(1).CurrentDate.Year);
+                var members = db.BerserkMembers;
+                foreach (var item in members)
+                {
+                    
+                    monthDifference = (currentData.Day - item.StartDate.Day)
+                                  + 12 * (currentData.Year - item.StartDate.Year);
+                }
             }
             return monthDifference;
-       }
-   }
+        }
+    }
 }
 
 // поменять дни на месяца в рассчетах данных

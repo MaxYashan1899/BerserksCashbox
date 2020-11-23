@@ -55,7 +55,7 @@ namespace CHRBerserk.BerserksCashbox
                     {
                         int monthPaymentSum = CashBoxDatabaseOperation.ParseInt("Введите сумму ежемесячного взноса:");
 
-                        BerserkMembers newMember = new BerserkMembers { BerserksName = name, StartDebt = monthPaymentSum, CurrentDate = DateTime.Now };
+                        BerserkMembers newMember = new BerserkMembers { BerserksName = name, StartDebt = monthPaymentSum, StartDate = DateTime.Now, CurrentDate = DateTime.Now };
                         berserkMembers.Add(newMember);
                         Console.WriteLine($"{name} добавлен в члены клуба");
 
@@ -104,7 +104,7 @@ namespace CHRBerserk.BerserksCashbox
                 paymentsSumOfRemovedMember = db.BerserkMembers.Where(n => n.BerserksName == name).Sum(n => n.CurrentPayment);
                 if (paymentsSumOfRemovedMember > 0)
                 {
-                    BerserkMembers noNameMember = new BerserkMembers { BerserksName = "NoName", StartDebt = 0, CurrentPayment = paymentsSumOfRemovedMember, CurrentDate = DateTime.Now };
+                    BerserkMembers noNameMember = new BerserkMembers { BerserksName = "NoName", StartDebt = 0, CurrentPayment = paymentsSumOfRemovedMember, CurrentDate = DateTime.Now, StartDate = DateTime.Now };
 
                     db.BerserkMembers.Add(noNameMember);
                     db.SaveChanges();

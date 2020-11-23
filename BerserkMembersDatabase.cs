@@ -17,15 +17,5 @@ namespace CHRBerserk.BerserksCashbox
         {
             optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=BerserkMembersappdb;Trusted_Connection=True;");
         }
-        //protected override void OnModelCreating(ModelBuilder modelBuilder)
-        //{
-        //    modelBuilder.Entity<BerserkMembers>(entity =>
-        //    {
-        //        // Set key for entity
-        //        entity.HasKey(p => p.Id);
-        //    });
-
-        //    base.OnModelCreating(modelBuilder);
-        //}
     }
 }

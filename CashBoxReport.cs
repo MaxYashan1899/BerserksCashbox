@@ -6,11 +6,11 @@ namespace CHRBerserk.BerserksCashbox
     class CashBoxReport
     {
         enum MonthName { январь = 1, февраль, март, апрель, май, июнь, июль, август, сентябрь, октябрь, ноябрь, декабрь };
-        public void TotalSumInCashBox(BerserkMembersMonthPaymentOperations databaseMonthPayment, BerserkMembersDatabaseInfo databaseInfo, CashBoxOperation cashBoxOperation)
+        public void TotalSumInCashBox(BerserkMembersMonthPaymentOperations databaseMonthPayment, BerserkMembersDatabaseInfo databaseInfo, CashBoxOperation cashBoxOperation, CashBoxDatabaseOperation cashBoxDatabaseOperation)
         {
             using (var db = new CashBoxDatabase())
             {
-                var monthDifference = databaseInfo.MonthDifference(DateTime.Now);
+                var monthDifference = cashBoxDatabaseOperation.MonthDifference(DateTime.Now);
                 if (monthDifference > 0)
                 {
                     var previousMonthCashBoxSum = PreviousMonthCashBoxSum(databaseMonthPayment, databaseInfo, cashBoxOperation, cashBoxOperation.BaseCashBoxSum);

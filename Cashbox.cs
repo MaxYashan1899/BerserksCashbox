@@ -1,11 +1,9 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 
 namespace CHRBerserk.BerserksCashbox
 {
     public class CashBoxOperation
     {
-        [Key]
         public int Id { get; set; }
         public int WorkshopRental { get; set; }
         public int CommunityHouseRental { get; set; }
