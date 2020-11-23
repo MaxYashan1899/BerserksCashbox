@@ -23,7 +23,7 @@ namespace CHRBerserk.BerserksCashbox
                             AddNewMember(berserkMembers);
                             break;
                         case 2:
-                            RemoveMember(berserkMembers);
+                            RemoveMember();
                             break;
                         case 3:
                             flag = false;
@@ -53,7 +53,7 @@ namespace CHRBerserk.BerserksCashbox
                         throw new ArgumentNullException("Имя не может быть пустым", nameof(name));
                     else
                     {
-                        int monthPaymentSum = CashBoxDatabaseOperation.ParseInt("Введите сумму ежемесячного взноса:");
+                        int monthPaymentSum = CashBoxDatabaseOperation.ParseInt("Введите сумму ежемесячного взноса");
 
                         BerserkMembers newMember = new BerserkMembers { BerserksName = name, StartDebt = monthPaymentSum, StartDate = DateTime.Now, CurrentDate = DateTime.Now };
                         berserkMembers.Add(newMember);
@@ -67,7 +67,7 @@ namespace CHRBerserk.BerserksCashbox
                 }
            }
         }
-        public void RemoveMember(List<BerserkMembers> berserkMembers)
+        public void RemoveMember()
             {
             var flag = true;
 
@@ -116,5 +116,4 @@ namespace CHRBerserk.BerserksCashbox
 }
 
 
-// Ввести СтартДату (чтоб вычеслять месячный долг добавленным людям)
 

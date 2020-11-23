@@ -105,9 +105,9 @@ namespace CHRBerserk.BerserksCashbox
                 Console.WriteLine($"\tОбщая сумма взносов: {monthPaymentSum} грн. \t\tРасходы на общинный дом: {communityHouseRentalSum} грн.");
                 Console.WriteLine($"\tСумма доходов: {otherIncomesSum} грн. \t\tСумма расходов: {otherExpencesSum} грн.");
                 Console.WriteLine();
-                // удалить консольный вывод за предыдущий месяц
             }
             return currentSumInCashBox;
         }
     }
 }
+// удалить консольный вывод за предыдущий месяц

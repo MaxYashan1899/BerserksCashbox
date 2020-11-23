@@ -37,7 +37,6 @@ namespace CHRBerserk.BerserksCashbox
         public int CommunityHouseRentalPayment(CashBoxOperation cashBoxOperation, BerserkMembersDatabaseInfo databaseMonthInfo)
         {
             int monthRentalSum = 800;
-            //int totalRentalDebtSum = monthRentalSum * (databaseMonthInfo.MonthDifference(DateTime.Now)+1);
             int totalRentalDebtSum = monthRentalSum * (MonthDifference(DateTime.Now) + 1);
 
             int communityHouseRentalPayment = ParseInt("Введите суму оплаты за аренду общинного дома");
@@ -57,7 +56,6 @@ namespace CHRBerserk.BerserksCashbox
         public int WorkshopRentalPayment(CashBoxOperation cashBoxOperation, BerserkMembersDatabaseInfo databaseMonthInfo)
         {
             int monthRentalSum = 1000;
-            //int totalRentalDebtSum = monthRentalSum * (databaseMonthInfo.MonthDifference(DateTime.Now)+1);
             int totalRentalDebtSum = monthRentalSum * (MonthDifference(DateTime.Now) + 1);
 
             int workshopRentalPayment = ParseInt("Введите суму оплаты за аренду мастерской");
