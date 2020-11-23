@@ -6,6 +6,10 @@ namespace CHRBerserk.BerserksCashbox
 {
   public class BerserkMembersMonthPaymentOperations
     {
+        /// <summary>
+        /// получаем текущий платеж
+        /// </summary>
+        /// <param name="berserkMembers"></param>
         public void GetMonthPayment(List<BerserkMembers> berserkMembers)
         {
             Console.WriteLine("Введите имя плательщика:");
@@ -27,6 +31,11 @@ namespace CHRBerserk.BerserksCashbox
             }
         }
 
+        /// <summary>
+        /// запись клубного взноса в казну 
+        /// </summary>
+        /// <param name="name">имя члена клуба</param>
+        /// <param name="paymentSum">сумма взноса</param>
         public void MonthPaymentToDatabase(string name, int paymentSum)
         {
                using (var db = new BerserkMembersDatabase())
@@ -38,6 +47,10 @@ namespace CHRBerserk.BerserksCashbox
                 db.SaveChanges();
             }
         }
+        /// <summary>
+        /// сумма всех взносов за месяц
+        /// </summary>
+        /// <returns>сумма всех взносов за месяц</returns>
         public int MonthPaymentsSum()
         {
             var totalMonthPaymentsSum = 0;
@@ -50,6 +63,10 @@ namespace CHRBerserk.BerserksCashbox
             }
             return totalMonthPaymentsSum;
         }
+        /// <summary>
+        /// сумма всех взносов за предыдущий месяц
+        /// </summary>
+        /// <returns>сумма всех взносов за предыдущий месяц</returns>
         public int PreviousMonthPaymentsSum()
         {
             var totalMonthPaymentsSum = 0;
@@ -57,7 +74,6 @@ namespace CHRBerserk.BerserksCashbox
             {
                 totalMonthPaymentsSum = db.BerserkMembers
                                   .Where(n => n.CurrentDate.Year < DateTime.Now.Year)
-                                  .Where(n => n.CurrentDate.Day < DateTime.Now.Day + 12)
                                   .Sum(p => p.CurrentPayment)
                                   + db.BerserkMembers
                                   .Where(n => n.CurrentDate.Year == DateTime.Now.Year)

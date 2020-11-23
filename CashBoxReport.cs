@@ -6,22 +6,35 @@ namespace CHRBerserk.BerserksCashbox
     class CashBoxReport
     {
         enum MonthName { январь = 1, февраль, март, апрель, май, июнь, июль, август, сентябрь, октябрь, ноябрь, декабрь };
-        public void TotalSumInCashBox(BerserkMembersMonthPaymentOperations databaseMonthPayment, BerserkMembersDatabaseInfo databaseInfo, CashBoxOperation cashBoxOperation, CashBoxDatabaseOperation cashBoxDatabaseOperation)
+
+        /// <summary>
+        /// общая текущая сумма в казне
+        /// </summary>
+        /// <param name="databaseMonthPayment">месячные клубные взносы</param>
+        /// <param name="cashBoxOperation">операции по кассе</param>
+        /// <param name="cashBoxDatabaseOperation">операции с БД по кассе</param>
+       public void TotalSumInCashBox(BerserkMembersMonthPaymentOperations databaseMonthPayment, CashBoxOperation cashBoxOperation, CashBoxDatabaseOperation cashBoxDatabaseOperation)
         {
             using (var db = new CashBoxDatabase())
             {
                 var monthDifference = cashBoxDatabaseOperation.MonthDifference(DateTime.Now);
                 if (monthDifference > 0)
                 {
-                    var previousMonthCashBoxSum = PreviousMonthCashBoxSum(databaseMonthPayment, databaseInfo, cashBoxOperation, cashBoxOperation.BaseCashBoxSum);
-                    CurrentMonthCashBoxSum(databaseMonthPayment, databaseInfo, cashBoxOperation, previousMonthCashBoxSum);
+                    var previousMonthCashBoxSum = PreviousMonthCashBoxSum(databaseMonthPayment, cashBoxOperation.BaseCashBoxSum);
+                    CurrentMonthCashBoxSum(databaseMonthPayment, previousMonthCashBoxSum);
                 }
                 else
-                    CurrentMonthCashBoxSum(databaseMonthPayment, databaseInfo, cashBoxOperation, cashBoxOperation.BaseCashBoxSum);
+                    CurrentMonthCashBoxSum(databaseMonthPayment, cashBoxOperation.BaseCashBoxSum);
             }
         }
 
-        public int CurrentMonthCashBoxSum(BerserkMembersMonthPaymentOperations databaseMonthPayment, BerserkMembersDatabaseInfo databaseInfo, CashBoxOperation cashBoxOperation, int baseCashBoxSum)
+        /// <summary>
+        /// Сумма по казне за текущей месяц
+        /// </summary>
+        /// <param name="databaseMonthPayment">месячные клубные взносы</param>
+        /// <param name="baseCashBoxSum">базовая сумма по клубной казне</param>
+        /// <returns>сумма по казне за текущей месяц</returns>
+        public int CurrentMonthCashBoxSum(BerserkMembersMonthPaymentOperations databaseMonthPayment, int baseCashBoxSum)
         {
             var currentSumInCashBox = 0;
 
@@ -57,7 +70,14 @@ namespace CHRBerserk.BerserksCashbox
             }
             return currentSumInCashBox;
         }
-        public int PreviousMonthCashBoxSum(BerserkMembersMonthPaymentOperations databaseMonthPayment, BerserkMembersDatabaseInfo databaseInfo, CashBoxOperation cashBoxOperation, int baseCashBoxSum)
+
+        /// <summary>
+        /// Сумма по казне за предыдущий месяц
+        /// </summary>
+        /// <param name="databaseMonthPayment">месячные клубные взносы</param>
+        /// <param name="baseCashBoxSum">базовая сумма по клубной казне</param>
+        /// <returns>сумма по казне за предыдущий месяц</returns>
+        public int PreviousMonthCashBoxSum(BerserkMembersMonthPaymentOperations databaseMonthPayment, int baseCashBoxSum)
         {
             var currentSumInCashBox = 0;
 
@@ -65,7 +85,7 @@ namespace CHRBerserk.BerserksCashbox
             {
                 var otherIncomesSum = db.CashBoxOperations
                                     .Where(n => n.CurrentDate.Year < DateTime.Now.Year)
-                                    .Where(n => n.CurrentDate.Day < DateTime.Now.Day + 12)
+                                    //.Where(n => n.CurrentDate.Day < DateTime.Now.Day + 12)
                                     .Sum(s => s.OtherIncomes)
                                     + db.CashBoxOperations
                                     .Where(n => n.CurrentDate.Year == DateTime.Now.Year)
@@ -73,7 +93,6 @@ namespace CHRBerserk.BerserksCashbox
                                     .Sum(s => s.OtherIncomes);
                 var otherExpencesSum = db.CashBoxOperations
                                       .Where(n => n.CurrentDate.Year < DateTime.Now.Year)
-                                      .Where(n => n.CurrentDate.Day < DateTime.Now.Day + 12)
                                       .Sum(s => s.OtherExpenses)
                                       + db.CashBoxOperations
                                       .Where(n => n.CurrentDate.Year == DateTime.Now.Year)
@@ -81,7 +100,6 @@ namespace CHRBerserk.BerserksCashbox
                                       .Sum(s => s.OtherExpenses);
                 var workshopRentalSum = db.CashBoxOperations
                                      .Where(n => n.CurrentDate.Year < DateTime.Now.Year)
-                                     .Where(n => n.CurrentDate.Day < DateTime.Now.Day + 12)
                                      .Sum(s => s.WorkshopRental)
                                      + db.CashBoxOperations
                                      .Where(n => n.CurrentDate.Year == DateTime.Now.Year)
@@ -89,7 +107,6 @@ namespace CHRBerserk.BerserksCashbox
                                      .Sum(s => s.WorkshopRental);
                 var communityHouseRentalSum = db.CashBoxOperations
                                      .Where(n => n.CurrentDate.Year < DateTime.Now.Year)
-                                     .Where(n => n.CurrentDate.Day < DateTime.Now.Day + 12)
                                      .Sum(s => s.CommunityHouseRental)
                                      + db.CashBoxOperations
                                      .Where(n => n.CurrentDate.Year == DateTime.Now.Year)

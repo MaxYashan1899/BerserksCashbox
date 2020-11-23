@@ -58,13 +58,13 @@ namespace CHRBerserk.BerserksCashbox
                     {
                         case 1:
                             monthPaymentOperations.GetMonthPayment(berserkMembers);
-                            databaseMonthInfo.DatabaseInfo(berserkMembers);
+                            databaseMonthInfo.MembersPaymentsMonthReport(berserkMembers);
                             break;
                         case 2:
-                            databaseCashBoxOperation.WorkshopRentalPayment(cashBoxOperation, databaseMonthInfo);
+                            databaseCashBoxOperation.WorkshopRentalPayment(cashBoxOperation);
                             break;
                         case 3:
-                            databaseCashBoxOperation.CommunityHouseRentalPayment(cashBoxOperation, databaseMonthInfo);
+                            databaseCashBoxOperation.CommunityHouseRentalPayment(cashBoxOperation);
                             break;
                         case 4:
                             databaseCashBoxOperation.GetOtherExpenses(cashBoxOperation);
@@ -73,10 +73,10 @@ namespace CHRBerserk.BerserksCashbox
                             databaseCashBoxOperation.GetOtherIncomes(cashBoxOperation);
                             break;
                         case 6:
-                            databaseMonthInfo.DatabaseInfo(berserkMembers);
+                            databaseMonthInfo.MembersPaymentsMonthReport(berserkMembers);
                             break;
                         case 7:
-                            cashBoxReport.TotalSumInCashBox(monthPaymentOperations, databaseMonthInfo, cashBoxOperation, databaseCashBoxOperation);
+                            cashBoxReport.TotalSumInCashBox(monthPaymentOperations, cashBoxOperation, databaseCashBoxOperation);
                             break;
                         case 8:
                             add_RemoveBerserksMember.AddAndRemoveMembers(berserkMembers);

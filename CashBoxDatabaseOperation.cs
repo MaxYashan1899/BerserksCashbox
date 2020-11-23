@@ -6,6 +6,12 @@ namespace CHRBerserk.BerserksCashbox
    public class CashBoxDatabaseOperation
     {
         enum MonthName { январь = 1, февраль, март, апрель, май, июнь, июль, август, сентябрь, октябрь, ноябрь, декабрь };
+       
+        /// <summary>
+        /// Получаем сумму других расходов с казны
+        /// </summary>
+        /// <param name="cashBoxOperation">операции по казне</param>
+        /// <returns>другие расходы с казны</returns>
         public int GetOtherExpenses(CashBoxOperation cashBoxOperation)
         {
             var otherExpenses = ParseInt("Введите сумму других расходов");
@@ -20,6 +26,12 @@ namespace CHRBerserk.BerserksCashbox
             }
             return cashBoxOperation.OtherExpenses;
         }
+
+        /// <summary>
+        /// Получаем сумму других доходов в казну
+        /// </summary>
+        /// <param name="cashBoxOperation">операции по казне</param>
+        /// <returns>другие доходы в казну</returns>
         public int GetOtherIncomes(CashBoxOperation cashBoxOperation)
         {
             var otherIncomes = ParseInt("Введите сумму других доходов");
@@ -34,7 +46,13 @@ namespace CHRBerserk.BerserksCashbox
             }
             return cashBoxOperation.OtherIncomes;
         }
-        public int CommunityHouseRentalPayment(CashBoxOperation cashBoxOperation, BerserkMembersDatabaseInfo databaseMonthInfo)
+
+        /// <summary>
+        /// Получаем проплату за аренду общинного дома
+        /// </summary>
+        /// <param name="cashBoxOperation">операции по казне</param>
+        /// <returns>проплата за аренду общинного дом</returns>
+        public int CommunityHouseRentalPayment(CashBoxOperation cashBoxOperation)
         {
             int monthRentalSum = 800;
             int totalRentalDebtSum = monthRentalSum * (MonthDifference(DateTime.Now) + 1);
@@ -53,7 +71,13 @@ namespace CHRBerserk.BerserksCashbox
             }
             return cashBoxOperation.CommunityHouseRental;
         }
-        public int WorkshopRentalPayment(CashBoxOperation cashBoxOperation, BerserkMembersDatabaseInfo databaseMonthInfo)
+
+        /// <summary>
+        /// Получаем проплату за мастерской
+        /// </summary>
+        /// <param name="cashBoxOperation">операции по казне</param>
+        /// <returns>проплата за аренду мастерской</returns>
+        public int WorkshopRentalPayment(CashBoxOperation cashBoxOperation)
         {
             int monthRentalSum = 1000;
             int totalRentalDebtSum = monthRentalSum * (MonthDifference(DateTime.Now) + 1);
@@ -73,6 +97,11 @@ namespace CHRBerserk.BerserksCashbox
             return cashBoxOperation.WorkshopRental;
         }
 
+        /// <summary>
+        /// проверка введеных данных на корректность
+        /// </summary>
+        /// <param name="sum">введенные данные</param>
+        /// <returns>корректно введенные данные</returns>
         public static int ParseInt(string sum)
         {
             while (true)
@@ -84,6 +113,12 @@ namespace CHRBerserk.BerserksCashbox
                     Console.WriteLine("Неверный формат введенных данных");
             }
         }
+        /// <summary>
+        /// Сообщения о состоянии долга по оплате арендованых помещений
+        /// </summary>
+        /// <param name="rentalPaymentsSum">оплата арендованых помещений</param>
+        /// <param name="rentalDebtSum">долг за аренду помещений</param>
+        /// <param name="name">название помещения</param>
         private static void RentalPaymentsReport(int rentalPaymentsSum, int rentalDebtSum, string name)
         {
             if (rentalPaymentsSum == rentalDebtSum)
@@ -99,6 +134,10 @@ namespace CHRBerserk.BerserksCashbox
                 Console.WriteLine($"Переплата за аренду {name} за {(MonthName)(DateTime.Now.Month)} на {difference} грн");
             }
         }
+        /// <summary>
+        /// разница между первой и последней операцией члена клуба (в месяцах)
+        /// </summary>
+        /// <returns>разница между первой и последней операцией члена клуба (в месяцах)</returns>
         public int MonthDifference(DateTime currentData)
         {
             int monthDifference = 0;
