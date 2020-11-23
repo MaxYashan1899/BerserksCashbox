@@ -69,7 +69,8 @@ namespace CHRBerserk.BerserksCashbox
         }
         public void RemoveMember(List<BerserkMembers> berserkMembers)
             {
-                var flag = true;
+            var flag = true;
+
             while (flag)
             {
                 Console.WriteLine("Введите имя члена клуба для удаления:");
@@ -83,21 +84,37 @@ namespace CHRBerserk.BerserksCashbox
                         throw new ArgumentNullException("Имя не может быть пустым", nameof(name));
                     else
                     {
-                        var memberForRemove = berserkMembers.First(n => n.BerserksName == name);
-                        berserkMembers.Remove(memberForRemove);
-                        Console.WriteLine($"{name} удален из членов клуба");
+                        var memberForRemove = db.BerserkMembers.Where(n => n.BerserksName == name);
+                        PaymentsSumOfRemovedMember(name);
 
-                        db.BerserkMembers.Remove(memberForRemove);
+                        Console.WriteLine($"{name} удален из членов клуба");
+                        db.BerserkMembers.RemoveRange(memberForRemove);
                         db.SaveChanges();
                       
                         flag = false;
                     }
                 }
             }
+         }
+        public int PaymentsSumOfRemovedMember(string name)
+        {
+            var paymentsSumOfRemovedMember = 0;
+            using (var db = new BerserkMembersDatabase())
+            {
+                paymentsSumOfRemovedMember = db.BerserkMembers.Where(n => n.BerserksName == name).Sum(n => n.CurrentPayment);
+                if (paymentsSumOfRemovedMember > 0)
+                {
+                    BerserkMembers noNameMember = new BerserkMembers { BerserksName = "NoName", StartDebt = 0, CurrentPayment = paymentsSumOfRemovedMember, CurrentDate = DateTime.Now };
+
+                    db.BerserkMembers.Add(noNameMember);
+                    db.SaveChanges();
+                }
+            }
+            return paymentsSumOfRemovedMember;
         }
     }
 }
 
-// удаление, добавление (обработать ошибки вывода) 
+
 // Ввести СтартДату (чтоб вычеслять месячный долг добавленным людям)
 
