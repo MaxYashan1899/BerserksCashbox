@@ -10,7 +10,7 @@ namespace CHRBerserk.BerserksCashbox
         /// </summary>
         public string BerserksName { get; set; }
         /// <summary>
-        /// текущий долг
+        /// общий долг
         /// </summary>
         public int CurrentDebt { get; set; }
         /// <summary>
@@ -40,3 +40,4 @@ namespace CHRBerserk.BerserksCashbox
     }
 }
 
+// поменять на Total Debt
