@@ -11,10 +11,10 @@ namespace CHRBerserk.BerserksCashbox
         {
             Console.OutputEncoding = System.Text.Encoding.UTF8;
 
-            var cashBoxOperation = new CashBoxOperation() { BaseCashBoxSum = 2500 };
+            var cashBox = new CashBox() { BaseCashBoxSum = 2500 };
             var cashBoxReport = new CashBoxReport();
-            var databaseCashBoxOperation = new CashBoxDatabaseOperation();
-            var databaseMonthInfo = new BerserkMembersDatabaseInfo();
+            var cashBoxPaymentsOperation = new CashBoxPaymentsOperation();
+            var berserkMembersMonthReport = new BerserkMembersMonthReport();
             var berserkMembers = new List<BerserkMembers>();
 
             var monthPaymentOperations = new BerserkMembersMonthPaymentOperations();
@@ -23,7 +23,7 @@ namespace CHRBerserk.BerserksCashbox
             #region Инициализация объектами
             BerserkMembers berserk1 = new BerserkMembers { BerserksName = "Ragnar", StartDebt = 250, CurrentDate = DateTime.Now, StartDate = DateTime.Now};
             BerserkMembers berserk2 = new BerserkMembers { BerserksName = "Ottar", StartDebt = 250, CurrentDate = DateTime.Now, StartDate = DateTime.Now };
-            BerserkMembers berserk3 = new BerserkMembers { BerserksName = "Hauk", StartDebt = 250, CurrentDate = DateTime.Now, StartDate = DateTime.Now };
+            BerserkMembers berserk3 = new BerserkMembers { BerserksName = "Torbiorn", StartDebt = 250, CurrentDate = DateTime.Now, StartDate = DateTime.Now };
             BerserkMembers berserk4 = new BerserkMembers { BerserksName = "Eivar", StartDebt = 150, CurrentDate = DateTime.Now, StartDate = DateTime.Now };
             berserkMembers.Add(berserk1);
             berserkMembers.Add(berserk2);
@@ -58,25 +58,25 @@ namespace CHRBerserk.BerserksCashbox
                     {
                         case 1:
                             monthPaymentOperations.GetMonthPayment(berserkMembers);
-                            databaseMonthInfo.MembersPaymentsMonthReport(berserkMembers);
+                            berserkMembersMonthReport.MembersPaymentsMonthReport(berserkMembers);
                             break;
                         case 2:
-                            databaseCashBoxOperation.WorkshopRentalPayment(cashBoxOperation);
+                            cashBoxPaymentsOperation.WorkshopRentalPayment(cashBox);
                             break;
                         case 3:
-                            databaseCashBoxOperation.CommunityHouseRentalPayment(cashBoxOperation);
+                            cashBoxPaymentsOperation.CommunityHouseRentalPayment(cashBox);
                             break;
                         case 4:
-                            databaseCashBoxOperation.GetOtherExpenses(cashBoxOperation);
+                            cashBoxPaymentsOperation.GetOtherExpenses(cashBox);
                             break;
                         case 5:
-                            databaseCashBoxOperation.GetOtherIncomes(cashBoxOperation);
+                            cashBoxPaymentsOperation.GetOtherIncomes(cashBox);
                             break;
                         case 6:
-                            databaseMonthInfo.MembersPaymentsMonthReport(berserkMembers);
+                            berserkMembersMonthReport.MembersPaymentsMonthReport(berserkMembers);
                             break;
                         case 7:
-                            cashBoxReport.TotalSumInCashBox(monthPaymentOperations, cashBoxOperation, databaseCashBoxOperation);
+                            cashBoxReport.TotalSumInCashBox(monthPaymentOperations, cashBox, cashBoxPaymentsOperation);
                             break;
                         case 8:
                             add_RemoveBerserksMember.AddAndRemoveMembers(berserkMembers);
@@ -97,5 +97,3 @@ namespace CHRBerserk.BerserksCashbox
         }
     }
 }
-
-// добавить комментарии

@@ -12,7 +12,7 @@ namespace CHRBerserk.BerserksCashbox
         /// <summary>
         /// общий долг
         /// </summary>
-        public int CurrentDebt { get; set; }
+        public int TotalDebt { get; set; }
         /// <summary>
         /// базовый клубный взнос(долг)
         /// </summary>
@@ -34,10 +34,6 @@ namespace CHRBerserk.BerserksCashbox
         /// </summary>
         public int MoneyBalance { get; set; }
 
-        public BerserkMembers()
-        { }
-
-    }
+        public BerserkMembers() { }
+     }
 }
-
-// поменять на Total Debt

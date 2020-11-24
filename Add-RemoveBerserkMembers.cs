@@ -6,6 +6,10 @@ namespace CHRBerserk.BerserksCashbox
 {
     public class Add_RemoveBerserkMembers
     {
+        /// <summary>
+        /// общий метод добавление и удаления членов клуба
+        /// </summary>
+        /// <param name="berserkMembers">член клуба</param>
         public void AddAndRemoveMembers(List<BerserkMembers> berserkMembers)
         {
             bool flag = true;
@@ -30,13 +34,17 @@ namespace CHRBerserk.BerserksCashbox
                             continue;
                     }
                 }
-                catch (Exception ex)
+                catch 
                 {
-                    Console.WriteLine(ex.Message);
+                    Console.WriteLine("Неверный формат введенных данных");
                 }
             }
         }
 
+        /// <summary>
+        /// добавление нового члена клуба
+        /// </summary>
+        /// <param name="berserkMembers">член клуба</param>
         public void AddNewMember(List<BerserkMembers> berserkMembers)
             {
                 var flag = true;
@@ -53,7 +61,7 @@ namespace CHRBerserk.BerserksCashbox
                         throw new ArgumentNullException("Имя не может быть пустым", nameof(name));
                     else
                     {
-                        int monthPaymentSum = CashBoxDatabaseOperation.ParseInt("Введите сумму ежемесячного взноса");
+                        int monthPaymentSum = CashBoxPaymentsOperation.ParseInt("Введите сумму ежемесячного взноса");
 
                         BerserkMembers newMember = new BerserkMembers { BerserksName = name, StartDebt = monthPaymentSum, StartDate = DateTime.Now, CurrentDate = DateTime.Now };
                         berserkMembers.Add(newMember);
@@ -67,6 +75,10 @@ namespace CHRBerserk.BerserksCashbox
                 }
            }
         }
+
+        /// <summary>
+        /// удаление члена клуба
+        /// </summary>
         public void RemoveMember()
             {
             var flag = true;
@@ -96,6 +108,11 @@ namespace CHRBerserk.BerserksCashbox
                 }
             }
          }
+        /// <summary>
+        /// сумма взносов удаленного члена клуба(записывается на анонимного члена клуба)
+        /// </summary>
+        /// <param name="name">удаленный член клуба</param>
+        /// <returns>сумма взносов удаленного члена клуба</returns>
         public int PaymentsSumOfRemovedMember(string name)
         {
             var paymentsSumOfRemovedMember = 0;

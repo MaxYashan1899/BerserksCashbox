@@ -3,63 +3,63 @@ using System.Linq;
 
 namespace CHRBerserk.BerserksCashbox
 {
-   public class CashBoxDatabaseOperation
+    public class CashBoxPaymentsOperation
     {
         enum MonthName { январь = 1, февраль, март, апрель, май, июнь, июль, август, сентябрь, октябрь, ноябрь, декабрь };
        
         /// <summary>
         /// Получаем сумму других расходов с казны
         /// </summary>
-        /// <param name="cashBoxOperation">операции по казне</param>
+        /// <param name="cashBox">операции по казне</param>
         /// <returns>другие расходы с казны</returns>
-        public int GetOtherExpenses(CashBoxOperation cashBoxOperation)
+        public int GetOtherExpenses(CashBox cashBox)
         {
             var otherExpenses = ParseInt("Введите сумму других расходов");
 
             Console.WriteLine($"Сумма других расходов {otherExpenses} грн");
-            var newOperation = new CashBoxOperation {OtherExpenses = otherExpenses, CurrentDate = DateTime.Now };
+            var newOperation = new CashBox {OtherExpenses = otherExpenses, CurrentDate = DateTime.Now };
 
             using (var db = new CashBoxDatabase())
             {
                 db.CashBoxOperations.Add(newOperation);
                 db.SaveChanges();
             }
-            return cashBoxOperation.OtherExpenses;
+            return cashBox.OtherExpenses;
         }
 
         /// <summary>
         /// Получаем сумму других доходов в казну
         /// </summary>
-        /// <param name="cashBoxOperation">операции по казне</param>
+        /// <param name="cashBox">операции по казне</param>
         /// <returns>другие доходы в казну</returns>
-        public int GetOtherIncomes(CashBoxOperation cashBoxOperation)
+        public int GetOtherIncomes(CashBox cashBox)
         {
             var otherIncomes = ParseInt("Введите сумму других доходов");
           
             Console.WriteLine($"Сумма других доходов {otherIncomes} грн");
-            var newOperation = new CashBoxOperation { OtherIncomes = otherIncomes, CurrentDate = DateTime.Now };
+            var newOperation = new CashBox { OtherIncomes = otherIncomes, CurrentDate = DateTime.Now };
 
             using (var db = new CashBoxDatabase())
             {
                 db.CashBoxOperations.Add(newOperation);
                 db.SaveChanges();
             }
-            return cashBoxOperation.OtherIncomes;
+            return cashBox.OtherIncomes;
         }
 
         /// <summary>
         /// Получаем проплату за аренду общинного дома
         /// </summary>
-        /// <param name="cashBoxOperation">операции по казне</param>
+        /// <param name="cashBox">операции по казне</param>
         /// <returns>проплата за аренду общинного дом</returns>
-        public int CommunityHouseRentalPayment(CashBoxOperation cashBoxOperation)
+        public int CommunityHouseRentalPayment(CashBox cashBox)
         {
             int monthRentalSum = 800;
             int totalRentalDebtSum = monthRentalSum * (MonthDifference(DateTime.Now) + 1);
 
             int communityHouseRentalPayment = ParseInt("Введите суму оплаты за аренду общинного дома");
             
-            var newOperation = new CashBoxOperation { CommunityHouseRental = communityHouseRentalPayment, CurrentDate = DateTime.Now };
+            var newOperation = new CashBox { CommunityHouseRental = communityHouseRentalPayment, CurrentDate = DateTime.Now };
 
             using (var db = new CashBoxDatabase())
             {
@@ -69,22 +69,22 @@ namespace CHRBerserk.BerserksCashbox
                 var communityHouseRentalPaymentSum = db.CashBoxOperations.Sum(p => p.CommunityHouseRental);
                 RentalPaymentsReport(communityHouseRentalPaymentSum, totalRentalDebtSum, "общинного дома");
             }
-            return cashBoxOperation.CommunityHouseRental;
+            return cashBox.CommunityHouseRental;
         }
 
         /// <summary>
         /// Получаем проплату за мастерской
         /// </summary>
-        /// <param name="cashBoxOperation">операции по казне</param>
+        /// <param name="cashBox">операции по казне</param>
         /// <returns>проплата за аренду мастерской</returns>
-        public int WorkshopRentalPayment(CashBoxOperation cashBoxOperation)
+        public int WorkshopRentalPayment(CashBox cashBox)
         {
             int monthRentalSum = 1000;
             int totalRentalDebtSum = monthRentalSum * (MonthDifference(DateTime.Now) + 1);
 
             int workshopRentalPayment = ParseInt("Введите суму оплаты за аренду мастерской");
 
-            var newOperation = new CashBoxOperation { WorkshopRental = workshopRentalPayment, CurrentDate = DateTime.Now};
+            var newOperation = new CashBox { WorkshopRental = workshopRentalPayment, CurrentDate = DateTime.Now};
 
             using (var db = new CashBoxDatabase())
             {
@@ -94,7 +94,7 @@ namespace CHRBerserk.BerserksCashbox
                 var workshopRentalPaymentSum = db.CashBoxOperations.Sum(p => p.WorkshopRental);
                 RentalPaymentsReport(workshopRentalPaymentSum, totalRentalDebtSum, "мастерской");
             }
-            return cashBoxOperation.WorkshopRental;
+            return cashBox.WorkshopRental;
         }
 
         /// <summary>

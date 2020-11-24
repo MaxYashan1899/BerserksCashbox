@@ -4,7 +4,7 @@ namespace CHRBerserk.BerserksCashbox
 {
     public class CashBoxDatabase : DbContext
     {
-        public DbSet<CashBoxOperation> CashBoxOperations { get; set; }
+        public DbSet<CashBox> CashBoxOperations { get; set; }
 
         public CashBoxDatabase()
         {

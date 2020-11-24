@@ -2,7 +2,7 @@
 
 namespace CHRBerserk.BerserksCashbox
 {
-    public class CashBoxOperation
+    public class CashBox
     {
         public int Id { get; set; }
         /// <summary>
@@ -30,6 +30,6 @@ namespace CHRBerserk.BerserksCashbox
         /// </summary>
         public DateTime CurrentDate { get; set; }
 
-        public CashBoxOperation() {  }
+        public CashBox() {  }
      }
 }
