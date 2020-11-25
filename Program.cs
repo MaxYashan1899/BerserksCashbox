@@ -21,15 +21,6 @@ namespace CHRBerserk.BerserksCashbox
             var add_RemoveBerserksMember = new Add_RemoveBerserkMembers();
 
             #region Инициализация объектами
-            //BerserkMembers berserk1 = new BerserkMembers { BerserksName = "Ragnar", StartDebt = 250, CurrentDate = DateTime.Now, StartDate = DateTime.Now};
-            //BerserkMembers berserk2 = new BerserkMembers { BerserksName = "Ottar", StartDebt = 250, CurrentDate = DateTime.Now, StartDate = DateTime.Now };
-            //BerserkMembers berserk3 = new BerserkMembers { BerserksName = "Torbiorn", StartDebt = 250, CurrentDate = DateTime.Now, StartDate = DateTime.Now };
-            //BerserkMembers berserk4 = new BerserkMembers { BerserksName = "Eivar", StartDebt = 150, CurrentDate = DateTime.Now, StartDate = DateTime.Now };
-            //berserkMembers.Add(berserk1);
-            //berserkMembers.Add(berserk2);
-            //berserkMembers.Add(berserk3);
-            //berserkMembers.Add(berserk4);
-
             berserkMembers.Add(new BerserkMembers { BerserksName = "Ragnar", StartDebt = 250, CurrentDate = DateTime.Now, StartDate = DateTime.Now });
             berserkMembers.Add(new BerserkMembers { BerserksName = "Ottar", StartDebt = 250, CurrentDate = DateTime.Now, StartDate = DateTime.Now });
             berserkMembers.Add(new BerserkMembers { BerserksName = "Torbiorn", StartDebt = 250, CurrentDate = DateTime.Now, StartDate = DateTime.Now });
