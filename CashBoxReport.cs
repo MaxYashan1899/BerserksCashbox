@@ -88,28 +88,28 @@ namespace CHRBerserk.BerserksCashbox
                                     .Sum(s => s.OtherIncomes)
                                     + db.CashBoxOperations
                                     .Where(n => n.CurrentDate.Year == DateTime.Now.Year)
-                                    .Where(n => n.CurrentDate.Day < DateTime.Now.Day)
+                                    .Where(n => n.CurrentDate.Month < DateTime.Now.Month)
                                     .Sum(s => s.OtherIncomes);
                 var otherExpencesSum = db.CashBoxOperations
                                       .Where(n => n.CurrentDate.Year < DateTime.Now.Year)
                                       .Sum(s => s.OtherExpenses)
                                       + db.CashBoxOperations
                                       .Where(n => n.CurrentDate.Year == DateTime.Now.Year)
-                                      .Where(n => n.CurrentDate.Day < DateTime.Now.Day)
+                                      .Where(n => n.CurrentDate.Month < DateTime.Now.Month)
                                       .Sum(s => s.OtherExpenses);
                 var workshopRentalSum = db.CashBoxOperations
                                      .Where(n => n.CurrentDate.Year < DateTime.Now.Year)
                                      .Sum(s => s.WorkshopRental)
                                      + db.CashBoxOperations
                                      .Where(n => n.CurrentDate.Year == DateTime.Now.Year)
-                                     .Where(n => n.CurrentDate.Day < DateTime.Now.Day)
+                                     .Where(n => n.CurrentDate.Month < DateTime.Now.Month)
                                      .Sum(s => s.WorkshopRental);
                 var communityHouseRentalSum = db.CashBoxOperations
                                      .Where(n => n.CurrentDate.Year < DateTime.Now.Year)
                                      .Sum(s => s.CommunityHouseRental)
                                      + db.CashBoxOperations
                                      .Where(n => n.CurrentDate.Year == DateTime.Now.Year)
-                                     .Where(n => n.CurrentDate.Day < DateTime.Now.Day)
+                                     .Where(n => n.CurrentDate.Month < DateTime.Now.Month)
                                      .Sum(s => s.CommunityHouseRental);
                 var monthPaymentSum = monthPaymentOperations.PreviousMonthPaymentsSum();
 

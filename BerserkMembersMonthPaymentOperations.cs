@@ -58,7 +58,7 @@ namespace CHRBerserk.BerserksCashbox
             {
                 totalMonthPaymentsSum = db.BerserkMembers
                                   .Where(y => y.CurrentDate.Year == DateTime.Now.Year)
-                                  .Where(d => d.CurrentDate.Day == DateTime.Now.Day)
+                                  .Where(d => d.CurrentDate.Month == DateTime.Now.Month)
                                   .Sum(p => p.CurrentPayment);
             }
             return totalMonthPaymentsSum;
@@ -77,7 +77,7 @@ namespace CHRBerserk.BerserksCashbox
                                   .Sum(p => p.CurrentPayment)
                                   + db.BerserkMembers
                                   .Where(n => n.CurrentDate.Year == DateTime.Now.Year)
-                                  .Where(d => d.CurrentDate.Day < DateTime.Now.Day)
+                                  .Where(d => d.CurrentDate.Month < DateTime.Now.Month)
                                   .Sum(p => p.CurrentPayment);
             }
             return totalMonthPaymentsSum;

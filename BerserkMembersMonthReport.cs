@@ -32,7 +32,7 @@ namespace CHRBerserk.BerserksCashbox
                 {
                     var memberMonthPaymentsSum = db.BerserkMembers
                                            .Where(y => y.CurrentDate.Year == DateTime.Now.Year)
-                                           .Where(d => d.CurrentDate.Day == DateTime.Now.Day)
+                                           .Where(d => d.CurrentDate.Month == DateTime.Now.Month)
                                            .Where(n => n.BerserksName == item.BerserksName)
                                            .Sum(p => p.CurrentPayment);
                    var memberPreviousMonthsPaymentsSum = db.BerserkMembers
@@ -41,7 +41,7 @@ namespace CHRBerserk.BerserksCashbox
                                           .Sum(p => p.CurrentPayment)
                                           + db.BerserkMembers
                                           .Where(y => y.CurrentDate.Year == DateTime.Now.Year)
-                                          .Where(d => d.CurrentDate.Day < DateTime.Now.Day)
+                                          .Where(d => d.CurrentDate.Month < DateTime.Now.Month)
                                           .Where(n => n.BerserksName == item.BerserksName)
                                           .Sum(p => p.CurrentPayment);
                     var currentDebt = item.TotalDebt - memberPreviousMonthsPaymentsSum;
@@ -64,7 +64,7 @@ namespace CHRBerserk.BerserksCashbox
                     foreach (var item in members)
                 {
                     // разница между теперешним месяцем и месяцем добавление члена клуба в казну
-                    var monthDifference = (DateTime.Now.Day - item.StartDate.Day)
+                    var monthDifference = (DateTime.Now.Month - item.StartDate.Month)
                                       + 12 * (DateTime.Now.Year - item.StartDate.Year);
                     item.TotalDebt = item.StartDebt * (monthDifference + 1);
                     }

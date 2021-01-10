@@ -143,7 +143,7 @@ namespace CHRBerserk.BerserksCashbox
             int monthDifference = 0;
             using (var db = new BerserkMembersDatabase())
             {
-                monthDifference = (currentData.Day - db.BerserkMembers.Find(1).CurrentDate.Day)
+                monthDifference = (currentData.Month - db.BerserkMembers.Find(1).CurrentDate.Month)
                                   + 12 * (currentData.Year - db.BerserkMembers.Find(1).CurrentDate.Year);
             }
             return monthDifference;
