@@ -115,8 +115,12 @@ namespace CHRBerserk.BerserksCashbox
 
                 currentSumInCashBox = baseCashBoxSum + otherIncomesSum + monthPaymentSum
                                       - otherExpencesSum - workshopRentalSum - communityHouseRentalSum;
-
-                Console.WriteLine($"Баланс по кассе за {(MonthName)(DateTime.Now.Month - 1)}: {currentSumInCashBox} грн.");
+                if (DateTime.Now.Month - 1 == 0)
+                    Console.WriteLine($"Баланс по кассе за {(MonthName)(12)}: {currentSumInCashBox} грн.");
+                else
+                {
+                    Console.WriteLine($"Баланс по кассе за {(MonthName)(DateTime.Now.Month - 1)}: {currentSumInCashBox} грн.");
+                }
                 Console.WriteLine($"\tКасса на начало месяца: {baseCashBoxSum} грн.  \tРасходы на мастерскую: {workshopRentalSum} грн.");
                 Console.WriteLine($"\tОбщая сумма взносов: {monthPaymentSum} грн. \t\tРасходы на общинный дом: {communityHouseRentalSum} грн.");
                 Console.WriteLine($"\tСумма доходов: {otherIncomesSum} грн. \t\tСумма расходов: {otherExpencesSum} грн.");
